@@ -43,6 +43,12 @@
 			]
 	},
 	{
+		"name": "splat-ecs/lib/systems/constrain-position",
+		"scenes": [
+			"main"
+			]
+	},
+	{
 		"name": "splat-ecs/lib/systems/follow-parent",
 		"scenes": [
 			"main"

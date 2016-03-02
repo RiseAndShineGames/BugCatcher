@@ -8451,6 +8451,7 @@
 			"height": file.height * file.tileheight
 		};
 		game.entities.set(tilemap, "size", map_size);
+		game.entities.set(player, "constrainPosition", { "id": 1 });
 	};
 
 
@@ -8814,6 +8815,12 @@
 			},
 			{
 				"name": "splat-ecs/lib/systems/apply-friction",
+				"scenes": [
+					"main"
+				]
+			},
+			{
+				"name": "splat-ecs/lib/systems/constrain-position",
 				"scenes": [
 					"main"
 				]

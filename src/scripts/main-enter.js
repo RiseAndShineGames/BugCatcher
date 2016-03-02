@@ -29,4 +29,5 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 		"height": file.height * file.tileheight
 	};
 	game.entities.set(tilemap, "size", map_size);
+	game.entities.set(player, "constrainPosition", { "id": 1 });
 };
