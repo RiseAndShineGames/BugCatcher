@@ -15,23 +15,6 @@
 		"matchCanvasSize": true
 	},
 	{
-		"id": 1,
-		"name": "tilemap",
-		"tilemap": {
-			"file": "tilemap.json",
-			"layer": "Background"
-		},
-		"position": {
-			"x": 0,
-			"y": 0,
-			"z": 0
-		},
-		"size": {
-			"width": 10,
-			"height": 10
-		}
-	},
-	{
 		"id": 2,
 		"name": "player",
 		"player": true,

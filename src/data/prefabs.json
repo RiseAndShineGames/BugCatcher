@@ -11,5 +11,20 @@
 			"height": 64 
 		},
 		"collisions": []
+	},
+	"tilelayer": {
+		"name": "tilelayer",
+		"tilelayer": true,
+		"position": {
+			"x": 0,
+			"y": 0,
+			"z": 0
+		},
+		"size": {
+			"width": 0,
+			"height": 0
+		},
+		"tilemap": {
+		}
 	}
 }
