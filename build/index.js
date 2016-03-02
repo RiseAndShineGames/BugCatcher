@@ -8424,14 +8424,23 @@
 
 	module.exports = function(game) { // eslint-disable-line no-unused-vars
 		var file = __webpack_require__(82);
-		var tilemap = 1;
+		var tilemap;
+		var background_layer = 9999;
 		var player = 2;
-		var tilemap_component = game.entities.get(tilemap, "tilemap");
+		var tilemap_component, tilelayer_position;
 		var collider, layer, object;
 		for (var i = 0; i < file.layers.length; i++) {
 			layer = file.layers[i];
-			if (layer.name == tilemap_component.layer) {
+			if (layer.type == "tilelayer") {
+				tilemap = game.instantiatePrefab("tilelayer");
+				tilemap_component = game.entities.get(tilemap, "tilemap");
+				tilelayer_position = game.entities.get(tilemap, "position");
+				tilelayer_position.z = i;
 				tilemap_component.layer_index = i;
+				tilemap_component.layer = layer.name;
+				if (tilemap < background_layer) {
+					background_layer = tilemap;
+				}
 			}
 			if (layer.name == "Collisions") {
 				for (var j = 0; j < layer.objects.length; j++) {
@@ -8451,7 +8460,7 @@
 			"height": file.height * file.tileheight
 		};
 		game.entities.set(tilemap, "size", map_size);
-		game.entities.set(player, "constrainPosition", { "id": 1 });
+		game.entities.set(player, "constrainPosition", { "id": background_layer });
 	};
 
 
@@ -8622,23 +8631,6 @@
 				"matchCanvasSize": true
 			},
 			{
-				"id": 1,
-				"name": "tilemap",
-				"tilemap": {
-					"file": "tilemap.json",
-					"layer": "Background"
-				},
-				"position": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"size": {
-					"width": 10,
-					"height": 10
-				}
-			},
-			{
 				"id": 2,
 				"name": "player",
 				"player": true,
@@ -8756,6 +8748,20 @@
 				"height": 64
 			},
 			"collisions": []
+		},
+		"tilelayer": {
+			"name": "tilelayer",
+			"tilelayer": true,
+			"position": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"size": {
+				"width": 0,
+				"height": 0
+			},
+			"tilemap": {}
 		}
 	};
 
