@@ -12,19 +12,20 @@
 		},
 		"collisions": []
 	},
-	"tilelayer": {
-		"name": "tilelayer",
-		"tilelayer": true,
+	"tile": {
+		"name": "tile",
+		"tile": true,
 		"position": {
 			"x": 0,
 			"y": 0,
-			"z": 0
+			"z": -1
 		},
 		"size": {
 			"width": 0,
 			"height": 0
 		},
-		"tilemap": {
+		"image": {
+			"name": ""
 		}
 	}
 }
