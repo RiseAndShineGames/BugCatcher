@@ -2,14 +2,13 @@
 
 module.exports = function(game) { // eslint-disable-line no-unused-vars
 	var file = require("../data/tilemap.json");
-	var tilemap;
-	var background_layer = 9999;
-	var player = 2;
-	var tilemap_component, tilelayer_position;
+	var tile, image, image_index, x, y;
+	var player = 1, container = 2;
 	var collider, layer, object;
 	for (var i = 0; i < file.layers.length; i++) {
 		layer = file.layers[i];
 		if (layer.type == "tilelayer") {
+			/*
 			tilemap = game.instantiatePrefab("tilelayer");
 			tilemap_component = game.entities.get(tilemap, "tilemap");
 			tilelayer_position = game.entities.get(tilemap, "position");
@@ -18,6 +17,16 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 			tilemap_component.layer = layer.name;
 			if (tilemap < background_layer) {
 				background_layer = tilemap;
+			}
+			*/
+			for (j = 0; j < layer.data.length; j++) {
+				tile = game.instantiatePrefab("tile");
+				image = game.entities.get(tile, "image");
+				x = (j % file.width) * file.tilewidth;
+				y = Math.floor(j / file.height) * file.tileheight;
+				image_index = layer.data[j] - 1;
+				image.name = file.tilesets[image_index].image;
+				game.entities.set(tile, "position", { "x": x, "y": y });
 			}
 		}
 		if (layer.name == "Collisions") {
@@ -37,6 +46,6 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 		"width": file.width * file.tilewidth,
 		"height": file.height * file.tileheight
 	};
-	game.entities.set(tilemap, "size", map_size);
-	game.entities.set(player, "constrainPosition", { "id": background_layer });
+	game.entities.set(container, "size", map_size);
+	game.entities.set(player, "constrainPosition", { "id": container });
 };

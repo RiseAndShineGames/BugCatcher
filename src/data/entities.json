@@ -15,13 +15,16 @@
 		"matchCanvasSize": true
 	},
 	{
-		"id": 2,
+		"id": 1,
 		"name": "player",
 		"player": true,
+		"image": {
+			"name": "character.png"
+		},
 		"position": {
 			"x": 0,
 			"y": 0,
-			"z": 2
+			"z": 10
 		},
 		"size": {
 			"width": 64,
@@ -51,6 +54,19 @@
 		"friction": {
 			"x": 0.97,
 			"y": 0.97
+		}
+	},
+	{
+		"id": 2,
+		"container": true,
+		"position": {
+			"x": 0,
+			"y": 0,
+			"z": -1
+		},
+		"size": {
+			"width": 0,
+			"height": 0
 		}
 	}
 	]
