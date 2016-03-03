@@ -8110,6 +8110,124 @@
 				"height": 10,
 				"name": "Background",
 				"opacity": 1,
+				"properties": {
+					"Background": "True"
+				},
+				"type": "tilelayer",
+				"visible": true,
+				"width": 10,
+				"x": 0,
+				"y": 0
+			},
+			{
+				"data": [
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					9,
+					9,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					9,
+					9,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				"height": 10,
+				"name": "Foreground",
+				"opacity": 1,
+				"properties": {
+					"Background": "False"
+				},
 				"type": "tilelayer",
 				"visible": true,
 				"width": 10,
@@ -8169,6 +8287,16 @@
 						"width": 120,
 						"x": 452,
 						"y": 65
+					},
+					{
+						"height": 54,
+						"name": "",
+						"properties": {},
+						"type": "",
+						"visible": true,
+						"width": 123,
+						"x": 452,
+						"y": 388
 					}
 				],
 				"opacity": 1,
@@ -8431,14 +8559,16 @@
 			layer = file.layers[i];
 			if (layer.type == "tilelayer") {
 				for (j = 0; j < layer.data.length; j++) {
-					tile = game.instantiatePrefab("tile");
-					image = game.entities.get(tile, "image");
-					tile_pos = game.entities.get(tile, "position");
-					tile_pos.x = (j % file.width) * file.tilewidth;
-					tile_pos.y = Math.floor(j / file.height) * file.tileheight;
-					tile_pos.z = (layer.name == "Background") ? -1 : 2;
 					image_index = layer.data[j] - 1;
-					image.name = file.tilesets[image_index].image;
+					if (image_index >= 0) {
+						tile = game.instantiatePrefab("tile");
+						image = game.entities.get(tile, "image");
+						tile_pos = game.entities.get(tile, "position");
+						tile_pos.x = (j % file.width) * file.tilewidth;
+						tile_pos.y = Math.floor(j / file.height) * file.tileheight;
+						tile_pos.z = (layer.properties.Background == "True") ? -1 : 2;
+						image.name = file.tilesets[image_index].image;
+					}
 				}
 			}
 			if (layer.type == "objectgroup") {
@@ -8632,7 +8762,7 @@
 					"y": 0
 				},
 				"follow": {
-					"id": 2,
+					"id": 1,
 					"distance": 100
 				},
 				"matchCanvasSize": true
@@ -8647,7 +8777,7 @@
 				"position": {
 					"x": 0,
 					"y": 0,
-					"z": 10
+					"z": 1
 				},
 				"size": {
 					"width": 64,
@@ -8902,12 +9032,6 @@
 			},
 			{
 				"name": "splat-ecs/lib/systems/draw-image",
-				"scenes": [
-					"main"
-				]
-			},
-			{
-				"name": "splat-ecs/lib/systems/draw-rectangles",
 				"scenes": [
 					"main"
 				]
