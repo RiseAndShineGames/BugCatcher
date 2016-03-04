@@ -50,7 +50,6 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 	var player = 1, container = 2;
 	var collider, layer, object;
 	var cols = file.tilesets[0].imagewidth / file.tilesets[0].tilewidth;
-	var rows = file.tilesets[0].imageheight / file.tilesets[0].tileheight;
 	for (var i = 0; i < file.layers.length; i++) {
 		layer = file.layers[i];
 		if (layer.type == "tilelayer") {
@@ -67,7 +66,7 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 					image.sourceWidth = file.tilesets[0].tilewidth;
 					image.sourceHeight = file.tilesets[0].tileheight;
 					image.sourceX = (image_index % cols) * file.tilesets[0].tilewidth;
-					image.sourceY = Math.floor(image_index / rows) * file.tilesets[0].tileheight;
+					image.sourceY = Math.floor(image_index / cols) * file.tilesets[0].tileheight;
 				}
 			}
 		}
