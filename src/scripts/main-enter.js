@@ -65,8 +65,11 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 					image.name = file.tilesets[0].image;
 					image.sourceWidth = file.tilesets[0].tilewidth;
 					image.sourceHeight = file.tilesets[0].tileheight;
+					image.destinationWidth = file.tilesets[0].tilewidth;
+					image.destinationHeight = file.tilesets[0].tileheight;
 					image.sourceX = (image_index % cols) * file.tilesets[0].tilewidth;
 					image.sourceY = Math.floor(image_index / cols) * file.tilesets[0].tileheight;
+					console.log(image);
 				}
 			}
 		}
@@ -90,4 +93,5 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 	};
 	game.entities.set(container, "size", map_size);
 	game.entities.set(player, "constrainPosition", { "id": container });
+	console.log(game.entities);
 };
