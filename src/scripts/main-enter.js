@@ -23,13 +23,13 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 		}
 		if (layer.type == "objectgroup") {
 			for (var j = 0; j < layer.objects.length; j++) {
-				if (layer.properties.Collidable) {
-					object = layer.objects[j];
+				object = layer.objects[j];
+				if (object.properties.Collidable == "True") {
 					collider = game.instantiatePrefab("collision");
 					game.entities.set(collider, "size", { "width": object.width, "height": object.height });
 					game.entities.set(collider, "position", { "x": object.x, "y": object.y });
-				} else if (layer.properties.spawnPoint) {
-					object = layer.objects[0];
+				}
+				if (object.properties.Spawn == "True") {
 					game.entities.set(player, "position", { "x": object.x, "y": object.y });
 				}
 			}

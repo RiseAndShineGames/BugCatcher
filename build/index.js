@@ -8236,12 +8236,14 @@
 			},
 			{
 				"height": 10,
-				"name": "Collisions",
+				"name": "Objects",
 				"objects": [
 					{
 						"height": 59,
 						"name": "",
-						"properties": {},
+						"properties": {
+							"Collidable": "True"
+						},
 						"type": "",
 						"visible": true,
 						"width": 248,
@@ -8251,7 +8253,9 @@
 					{
 						"height": 117,
 						"name": "",
-						"properties": {},
+						"properties": {
+							"Collidable": "True"
+						},
 						"type": "",
 						"visible": true,
 						"width": 55,
@@ -8261,7 +8265,9 @@
 					{
 						"height": 59,
 						"name": "",
-						"properties": {},
+						"properties": {
+							"Collidable": "True"
+						},
 						"type": "",
 						"visible": true,
 						"width": 120,
@@ -8271,7 +8277,9 @@
 					{
 						"height": 61,
 						"name": "",
-						"properties": {},
+						"properties": {
+							"Collidable": "True"
+						},
 						"type": "",
 						"visible": true,
 						"width": 253,
@@ -8281,7 +8289,9 @@
 					{
 						"height": 56,
 						"name": "",
-						"properties": {},
+						"properties": {
+							"Collidable": "True"
+						},
 						"type": "",
 						"visible": true,
 						"width": 120,
@@ -8291,42 +8301,44 @@
 					{
 						"height": 54,
 						"name": "",
-						"properties": {},
+						"properties": {
+							"Collidable": "1"
+						},
 						"type": "",
 						"visible": true,
 						"width": 123,
 						"x": 452,
 						"y": 388
+					},
+					{
+						"height": 54,
+						"name": "",
+						"properties": {
+							"Collidable": "True"
+						},
+						"type": "",
+						"visible": true,
+						"width": 123,
+						"x": 452,
+						"y": 388
+					},
+					{
+						"height": 62,
+						"name": "",
+						"properties": {
+							"Collidable": "False",
+							"Spawn": "True"
+						},
+						"type": "",
+						"visible": true,
+						"width": 63,
+						"x": 65,
+						"y": 450
 					}
 				],
 				"opacity": 1,
 				"properties": {
 					"Collidable": "True"
-				},
-				"type": "objectgroup",
-				"visible": true,
-				"width": 10,
-				"x": 0,
-				"y": 0
-			},
-			{
-				"height": 10,
-				"name": "Spawn",
-				"objects": [
-					{
-						"height": 59,
-						"name": "",
-						"properties": {},
-						"type": "",
-						"visible": true,
-						"width": 59,
-						"x": 67,
-						"y": 449
-					}
-				],
-				"opacity": 1,
-				"properties": {
-					"spawnPoint": "True"
 				},
 				"type": "objectgroup",
 				"visible": true,
@@ -8472,19 +8484,19 @@
 		return entityLastPosition.y >= otherPosition.y + otherSize.height;
 	}
 
-	module.exports = function(ecs, data) { // eslint-disable-line no-unused-vars
-		data.entities.registerSearch("resolveCollisions", ["collisions","velocity","lastPosition","position"]);
+	module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
+		game.entities.registerSearch("resolveCollisions", ["collisions","velocity","lastPosition","position"]);
 		ecs.addEach(function(entity, elapsed) { // eslint-disable-line no-unused-vars
-			var entityCollisions = data.entities.get(entity, "collisions");
-			var entityPosition = data.entities.get(entity, "position");
-			var entitySize = data.entities.get(entity, "size");
-			var entityVelocity = data.entities.get(entity, "velocity");
-			var entityLastPosition = data.entities.get(entity, "lastPosition");
+			var entityCollisions = game.entities.get(entity, "collisions");
+			var entityPosition = game.entities.get(entity, "position");
+			var entitySize = game.entities.get(entity, "size");
+			var entityVelocity = game.entities.get(entity, "velocity");
+			var entityLastPosition = game.entities.get(entity, "lastPosition");
 
 			for (var i = 0; i < entityCollisions.length; i++) {
 				var other = entityCollisions[i];
-				var otherPosition = data.entities.get(other, "position");
-				var otherSize = data.entities.get(other, "size");
+				var otherPosition = game.entities.get(other, "position");
+				var otherSize = game.entities.get(other, "size");
 
 				if (wasLeft(entityLastPosition, entitySize, otherPosition)) {
 					entityPosition.x = otherPosition.x - entitySize.width;
@@ -8573,13 +8585,13 @@
 			}
 			if (layer.type == "objectgroup") {
 				for (var j = 0; j < layer.objects.length; j++) {
-					if (layer.properties.Collidable) {
-						object = layer.objects[j];
+					object = layer.objects[j];
+					if (object.properties.Collidable == "True") {
 						collider = game.instantiatePrefab("collision");
 						game.entities.set(collider, "size", { "width": object.width, "height": object.height });
 						game.entities.set(collider, "position", { "x": object.x, "y": object.y });
-					} else if (layer.properties.spawnPoint) {
-						object = layer.objects[0];
+					}
+					if (object.properties.Spawn == "True") {
 						game.entities.set(player, "position", { "x": object.x, "y": object.y });
 					}
 				}
