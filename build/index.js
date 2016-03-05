@@ -75,11 +75,11 @@
 	var imageContext = __webpack_require__(88);
 	var imageManifest = generateManifest(imageContext.keys(), "images");
 
-	var soundContext = __webpack_require__(100);
+	var soundContext = __webpack_require__(101);
 	var soundManifest = generateManifest(soundContext.keys(), "sounds");
 
 	var localDataPath = "./data";
-	var localDataRequire = __webpack_require__(101);
+	var localDataRequire = __webpack_require__(102);
 
 	function customRequire(path) {
 		if (path.indexOf(splatSystemPath) === 0) {
@@ -8008,104 +8008,104 @@
 				"data": [
 					4,
 					4,
-					4,
-					1,
-					4,
-					2,
-					2,
-					2,
-					4,
-					4,
-					8,
-					8,
-					8,
-					8,
-					2,
-					2,
-					1,
-					6,
-					6,
-					2,
-					2,
-					2,
-					2,
-					2,
-					4,
-					4,
-					4,
-					2,
-					2,
-					2,
-					2,
-					2,
-					2,
-					2,
-					6,
-					6,
-					2,
-					2,
-					2,
-					2,
-					2,
-					2,
-					4,
-					4,
-					4,
-					6,
-					2,
-					2,
-					2,
-					4,
-					4,
-					3,
-					3,
-					3,
-					3,
-					6,
-					2,
-					2,
-					4,
-					4,
-					4,
-					3,
-					2,
-					2,
+					5,
 					3,
 					4,
 					4,
+					4,
+					2,
+					2,
+					2,
 					2,
 					4,
 					4,
-					2,
+					5,
+					3,
+					3,
 					5,
 					2,
-					2,
-					3,
-					4,
-					2,
-					4,
-					4,
-					4,
-					2,
 					3,
 					2,
+					5,
+					5,
+					10,
+					10,
+					10,
+					10,
+					3,
+					5,
+					2,
+					5,
+					5,
+					4,
+					2,
+					2,
+					10,
+					5,
+					3,
+					3,
+					3,
+					3,
+					2,
+					4,
+					3,
+					5,
+					10,
+					3,
+					5,
 					4,
 					3,
 					3,
 					2,
-					1,
+					4,
+					3,
+					5,
+					10,
+					3,
+					2,
+					5,
+					3,
+					5,
+					4,
+					6,
 					4,
 					3,
 					2,
-					4,
 					3,
 					2,
+					12,
+					12,
 					4,
-					9,
-					9,
-					9,
-					9,
-					3
+					5,
+					3,
+					2,
+					3,
+					2,
+					2,
+					2,
+					4,
+					4,
+					3,
+					4,
+					4,
+					3,
+					4,
+					3,
+					4,
+					4,
+					5,
+					3,
+					5,
+					3,
+					3,
+					4,
+					5,
+					4,
+					4,
+					4,
+					5,
+					2,
+					2
 				],
 				"height": 10,
 				"name": "Background",
@@ -8178,8 +8178,8 @@
 					0,
 					0,
 					0,
-					9,
-					9,
+					11,
+					11,
 					0,
 					0,
 					0,
@@ -8188,8 +8188,8 @@
 					0,
 					0,
 					0,
-					9,
-					9,
+					0,
+					0,
 					0,
 					0,
 					0,
@@ -8246,100 +8246,48 @@
 						},
 						"type": "",
 						"visible": true,
-						"width": 248,
-						"x": 323,
-						"y": 579
-					},
-					{
-						"height": 117,
-						"name": "",
-						"properties": {
-							"Collidable": "True"
-						},
-						"type": "",
-						"visible": true,
-						"width": 55,
-						"x": 323,
-						"y": 260
-					},
-					{
-						"height": 59,
-						"name": "",
-						"properties": {
-							"Collidable": "True"
-						},
-						"type": "",
-						"visible": true,
-						"width": 120,
-						"x": 259,
-						"y": 197
-					},
-					{
-						"height": 61,
-						"name": "",
-						"properties": {
-							"Collidable": "True"
-						},
-						"type": "",
-						"visible": true,
-						"width": 253,
-						"x": 1,
-						"y": 65
-					},
-					{
-						"height": 56,
-						"name": "",
-						"properties": {
-							"Collidable": "True"
-						},
-						"type": "",
-						"visible": true,
-						"width": 120,
+						"width": 119,
 						"x": 452,
-						"y": 65
+						"y": 386
 					},
 					{
-						"height": 54,
-						"name": "",
-						"properties": {
-							"Collidable": "1"
-						},
-						"type": "",
-						"visible": true,
-						"width": 123,
-						"x": 452,
-						"y": 388
-					},
-					{
-						"height": 54,
+						"height": 192,
 						"name": "",
 						"properties": {
 							"Collidable": "True"
 						},
 						"type": "",
 						"visible": true,
-						"width": 123,
-						"x": 452,
-						"y": 388
+						"width": 64,
+						"x": 256,
+						"y": 192
 					},
 					{
-						"height": 62,
+						"height": 64,
 						"name": "",
 						"properties": {
-							"Collidable": "False",
+							"Collidable": "True"
+						},
+						"type": "",
+						"visible": true,
+						"width": 256,
+						"x": 128,
+						"y": 128
+					},
+					{
+						"height": 64,
+						"name": "",
+						"properties": {
 							"Spawn": "True"
 						},
 						"type": "",
 						"visible": true,
-						"width": 63,
-						"x": 65,
-						"y": 450
+						"width": 64,
+						"x": 64,
+						"y": 384
 					}
 				],
 				"opacity": 1,
-				"properties": {
-					"Collidable": "True"
-				},
 				"type": "objectgroup",
 				"visible": true,
 				"width": 10,
@@ -8353,107 +8301,11 @@
 		"tilesets": [
 			{
 				"firstgid": 1,
-				"image": "grass1.png",
-				"imageheight": 64,
-				"imagewidth": 64,
+				"image": "ground_tiles.png",
+				"imageheight": 128,
+				"imagewidth": 384,
 				"margin": 0,
-				"name": "grass1",
-				"properties": {},
-				"spacing": 0,
-				"tileheight": 64,
-				"tilewidth": 64
-			},
-			{
-				"firstgid": 2,
-				"image": "grass2.png",
-				"imageheight": 64,
-				"imagewidth": 64,
-				"margin": 0,
-				"name": "grass2",
-				"properties": {},
-				"spacing": 0,
-				"tileheight": 64,
-				"tilewidth": 64
-			},
-			{
-				"firstgid": 3,
-				"image": "grass3.png",
-				"imageheight": 64,
-				"imagewidth": 64,
-				"margin": 0,
-				"name": "grass3",
-				"properties": {},
-				"spacing": 0,
-				"tileheight": 64,
-				"tilewidth": 64
-			},
-			{
-				"firstgid": 4,
-				"image": "grass4.png",
-				"imageheight": 64,
-				"imagewidth": 64,
-				"margin": 0,
-				"name": "grass4",
-				"properties": {},
-				"spacing": 0,
-				"tileheight": 64,
-				"tilewidth": 64
-			},
-			{
-				"firstgid": 5,
-				"image": "hole.png",
-				"imageheight": 64,
-				"imagewidth": 64,
-				"margin": 0,
-				"name": "hole",
-				"properties": {},
-				"spacing": 0,
-				"tileheight": 64,
-				"tilewidth": 64
-			},
-			{
-				"firstgid": 6,
-				"image": "stone1.png",
-				"imageheight": 64,
-				"imagewidth": 64,
-				"margin": 0,
-				"name": "stone1",
-				"properties": {},
-				"spacing": 0,
-				"tileheight": 64,
-				"tilewidth": 64
-			},
-			{
-				"firstgid": 7,
-				"image": "stone2.png",
-				"imageheight": 64,
-				"imagewidth": 64,
-				"margin": 0,
-				"name": "stone2",
-				"properties": {},
-				"spacing": 0,
-				"tileheight": 64,
-				"tilewidth": 64
-			},
-			{
-				"firstgid": 8,
-				"image": "tree.png",
-				"imageheight": 64,
-				"imagewidth": 64,
-				"margin": 0,
-				"name": "tree",
-				"properties": {},
-				"spacing": 0,
-				"tileheight": 64,
-				"tilewidth": 64
-			},
-			{
-				"firstgid": 9,
-				"image": "tree2.png",
-				"imageheight": 64,
-				"imagewidth": 64,
-				"margin": 0,
-				"name": "tree2",
+				"name": "ground_tiles",
 				"properties": {},
 				"spacing": 0,
 				"tileheight": 64,
@@ -8562,41 +8414,86 @@
 
 	"use strict";
 
+	/**
+	 * Tilesets
+	 * What I know:
+	 *		imagewidth
+	 *		imageheight
+	 *		tilewidth
+	 *		tileheight
+	 * cols = imagewidth / tilewidth;
+	 * rows = imageheight / tileheight;
+	 * var x = (i % cols) * tilewidth;
+	 * var y = Math.floor(i/rows) * tileheight;
+	 */
+
 	module.exports = function(game) { // eslint-disable-line no-unused-vars
 		var file = __webpack_require__(82);
+
+		// Tile layer variables
 		var tile, image, image_index, tile_pos;
-		var player = 1, container = 2;
 		var collider, layer, object;
+		var cols = file.tilesets[0].imagewidth / file.tilesets[0].tilewidth;
+		
 		for (var i = 0; i < file.layers.length; i++) {
 			layer = file.layers[i];
+
+			// Render Tile Layers
 			if (layer.type == "tilelayer") {
 				for (j = 0; j < layer.data.length; j++) {
+
+					// Tiled gives 1-based indexes. Subtract one for position math
 					image_index = layer.data[j] - 1;
 					if (image_index >= 0) {
+
+						// Create tile and get properties
 						tile = game.instantiatePrefab("tile");
 						image = game.entities.get(tile, "image");
 						tile_pos = game.entities.get(tile, "position");
+
+						// Position based on index
 						tile_pos.x = (j % file.width) * file.tilewidth;
 						tile_pos.y = Math.floor(j / file.height) * file.tileheight;
+
+						// Character position z: 1 so anything without background true will layer over player
 						tile_pos.z = (layer.properties.Background == "True") ? -1 : 2;
-						image.name = file.tilesets[image_index].image;
+
+						// Select which "tile" of the tileset image to render
+						image.name = file.tilesets[0].image;
+						image.sourceWidth = file.tilesets[0].tilewidth;
+						image.sourceHeight = file.tilesets[0].tileheight;
+						image.destinationWidth = file.tilesets[0].tilewidth;
+						image.destinationHeight = file.tilesets[0].tileheight;
+						image.sourceX = (image_index % cols) * file.tilesets[0].tilewidth;
+						image.sourceY = Math.floor(image_index / cols) * file.tilesets[0].tileheight;
+						
 					}
 				}
 			}
+
+			// Loop object layer for collisions and spawn point
+			// TODO Bug spawn chance triggers, doors, switches (buttons), warp zones, NPC Spawn points
 			if (layer.type == "objectgroup") {
 				for (var j = 0; j < layer.objects.length; j++) {
 					object = layer.objects[j];
+
+					// Collision box prefabs
 					if (object.properties.Collidable == "True") {
 						collider = game.instantiatePrefab("collision");
 						game.entities.set(collider, "size", { "width": object.width, "height": object.height });
 						game.entities.set(collider, "position", { "x": object.x, "y": object.y });
 					}
+
+					// Spawn points
 					if (object.properties.Spawn == "True") {
 						game.entities.set(player, "position", { "x": object.x, "y": object.y });
 					}
 				}
 			}
 		}
+
+		// Define map bounding box for contrain position
+		var player = 1, container = 2;
 		var map_size = {
 			"width": file.width * file.tilewidth,
 			"height": file.height * file.tileheight
@@ -8626,12 +8523,13 @@
 		"./grass2.png": 91,
 		"./grass3.png": 92,
 		"./grass4.png": 93,
-		"./hole.png": 94,
-		"./logo.png": 95,
-		"./stone1.png": 96,
-		"./stone2.png": 97,
-		"./tree.png": 98,
-		"./tree2.png": 99
+		"./ground_tiles.png": 94,
+		"./hole.png": 95,
+		"./logo.png": 96,
+		"./stone1.png": 97,
+		"./stone2.png": 98,
+		"./tree.png": 99,
+		"./tree2.png": 100
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -8681,40 +8579,46 @@
 /* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/hole.png";
+	module.exports = __webpack_require__.p + "images/ground_tiles.png";
 
 /***/ },
 /* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/logo.png";
+	module.exports = __webpack_require__.p + "images/hole.png";
 
 /***/ },
 /* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/stone1.png";
+	module.exports = __webpack_require__.p + "images/logo.png";
 
 /***/ },
 /* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/stone2.png";
+	module.exports = __webpack_require__.p + "images/stone1.png";
 
 /***/ },
 /* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tree.png";
+	module.exports = __webpack_require__.p + "images/stone2.png";
 
 /***/ },
 /* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tree2.png";
+	module.exports = __webpack_require__.p + "images/tree.png";
 
 /***/ },
 /* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/tree2.png";
+
+/***/ },
+/* 101 */
 /***/ function(module, exports) {
 
 	function webpackContext(req) {
@@ -8723,20 +8627,20 @@
 	webpackContext.keys = function() { return []; };
 	webpackContext.resolve = webpackContext;
 	module.exports = webpackContext;
-	webpackContext.id = 100;
+	webpackContext.id = 101;
 
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./animations.json": 102,
-		"./entities.json": 103,
-		"./inputs.json": 104,
-		"./prefabs.json": 105,
-		"./scenes.json": 106,
-		"./systems.json": 107,
+		"./animations.json": 103,
+		"./entities.json": 104,
+		"./inputs.json": 105,
+		"./prefabs.json": 106,
+		"./scenes.json": 107,
+		"./systems.json": 108,
 		"./tilemap.json": 82
 	};
 	function webpackContext(req) {
@@ -8750,17 +8654,17 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 101;
+	webpackContext.id = 102;
 
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8838,7 +8742,7 @@
 	};
 
 /***/ },
-/* 104 */
+/* 105 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8897,7 +8801,7 @@
 	};
 
 /***/ },
-/* 105 */
+/* 106 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8933,7 +8837,7 @@
 	};
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8945,7 +8849,7 @@
 	};
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -9032,12 +8936,6 @@
 			},
 			{
 				"name": "splat-ecs/lib/systems/viewport-move-to-camera",
-				"scenes": [
-					"main"
-				]
-			},
-			{
-				"name": "./systems/renderer/sample-renderer-system",
 				"scenes": [
 					"main"
 				]
