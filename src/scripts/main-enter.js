@@ -3,7 +3,7 @@
 module.exports = function(game) { // eslint-disable-line no-unused-vars
 	var file = require("../data/tilemap.json");
 	// Tile layer variables
-	var tile, image, image_index, tile_pos, cols, tileset_index = 0;
+	var tile, image, image_index, tile_pos, cols, tileset, tileset_index = 0;
 	var collider, layer, object;
 	var player = 1, container = 2;
 
@@ -23,6 +23,7 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 				}
 				cols = file.tilesets[tileset_index].imagewidth / file.tilesets[tileset_index].tilewidth;
 				image_index = layer.data[j] - file.tilesets[tileset_index].firstgid;
+				tileset = file.tilesets[tileset_index];
 
 				if (image_index >= 0) {
 
@@ -33,19 +34,19 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 
 					// Position based on index
 					tile_pos.x = (j % file.width) * file.tilewidth;
-					tile_pos.y = Math.floor(j / file.height) * file.tileheight;
+					tile_pos.y = Math.floor(j / file.width) * file.tileheight;
 
 					// Character position z: 1 so anything without background true will layer over player
 					tile_pos.z = (layer.properties.Background == "True") ? -1 : 2;
 					
 					// Select which "tile" of the tileset image to render
-					image.name = file.tilesets[tileset_index].image;
-					image.sourceWidth = file.tilesets[tileset_index].tilewidth;
-					image.sourceHeight = file.tilesets[tileset_index].tileheight;
-					image.destinationWidth = file.tilesets[tileset_index].tilewidth;
-					image.destinationHeight = file.tilesets[tileset_index].tileheight;
-					image.sourceX = (image_index % cols) * file.tilesets[tileset_index].tilewidth;
-					image.sourceY = Math.floor(image_index / cols) * file.tilesets[tileset_index].tileheight;
+					image.name = tileset.image;
+					image.sourceWidth = tileset.tilewidth;
+					image.sourceHeight = tileset.tileheight;
+					image.destinationWidth = tileset.tilewidth;
+					image.destinationHeight = tileset.tileheight;
+					image.sourceX = (image_index % cols) * tileset.tilewidth + ((image_index % cols) * tileset.spacing) + tileset.margin;
+					image.sourceY = Math.floor(image_index / cols) * tileset.tileheight + (Math.floor(image_index / cols) * tileset.spacing) + tileset.margin;
 					
 				}
 			}
