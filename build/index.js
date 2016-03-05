@@ -75,11 +75,11 @@
 	var imageContext = __webpack_require__(88);
 	var imageManifest = generateManifest(imageContext.keys(), "images");
 
-	var soundContext = __webpack_require__(99);
+	var soundContext = __webpack_require__(100);
 	var soundManifest = generateManifest(soundContext.keys(), "sounds");
 
 	var localDataPath = "./data";
-	var localDataRequire = __webpack_require__(100);
+	var localDataRequire = __webpack_require__(101);
 
 	function customRequire(path) {
 		if (path.indexOf(splatSystemPath) === 0) {
@@ -8110,6 +8110,124 @@
 				"height": 10,
 				"name": "Background",
 				"opacity": 1,
+				"properties": {
+					"Background": "True"
+				},
+				"type": "tilelayer",
+				"visible": true,
+				"width": 10,
+				"x": 0,
+				"y": 0
+			},
+			{
+				"data": [
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					9,
+					9,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					9,
+					9,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				"height": 10,
+				"name": "Foreground",
+				"opacity": 1,
+				"properties": {
+					"Background": "False"
+				},
 				"type": "tilelayer",
 				"visible": true,
 				"width": 10,
@@ -8118,12 +8236,14 @@
 			},
 			{
 				"height": 10,
-				"name": "Collisions",
+				"name": "Objects",
 				"objects": [
 					{
 						"height": 59,
 						"name": "",
-						"properties": {},
+						"properties": {
+							"Collidable": "True"
+						},
 						"type": "",
 						"visible": true,
 						"width": 248,
@@ -8133,7 +8253,9 @@
 					{
 						"height": 117,
 						"name": "",
-						"properties": {},
+						"properties": {
+							"Collidable": "True"
+						},
 						"type": "",
 						"visible": true,
 						"width": 55,
@@ -8143,7 +8265,9 @@
 					{
 						"height": 59,
 						"name": "",
-						"properties": {},
+						"properties": {
+							"Collidable": "True"
+						},
 						"type": "",
 						"visible": true,
 						"width": 120,
@@ -8153,7 +8277,9 @@
 					{
 						"height": 61,
 						"name": "",
-						"properties": {},
+						"properties": {
+							"Collidable": "True"
+						},
 						"type": "",
 						"visible": true,
 						"width": 253,
@@ -8163,42 +8289,56 @@
 					{
 						"height": 56,
 						"name": "",
-						"properties": {},
+						"properties": {
+							"Collidable": "True"
+						},
 						"type": "",
 						"visible": true,
 						"width": 120,
 						"x": 452,
 						"y": 65
+					},
+					{
+						"height": 54,
+						"name": "",
+						"properties": {
+							"Collidable": "1"
+						},
+						"type": "",
+						"visible": true,
+						"width": 123,
+						"x": 452,
+						"y": 388
+					},
+					{
+						"height": 54,
+						"name": "",
+						"properties": {
+							"Collidable": "True"
+						},
+						"type": "",
+						"visible": true,
+						"width": 123,
+						"x": 452,
+						"y": 388
+					},
+					{
+						"height": 62,
+						"name": "",
+						"properties": {
+							"Collidable": "False",
+							"Spawn": "True"
+						},
+						"type": "",
+						"visible": true,
+						"width": 63,
+						"x": 65,
+						"y": 450
 					}
 				],
 				"opacity": 1,
 				"properties": {
 					"Collidable": "True"
-				},
-				"type": "objectgroup",
-				"visible": true,
-				"width": 10,
-				"x": 0,
-				"y": 0
-			},
-			{
-				"height": 10,
-				"name": "Spawn",
-				"objects": [
-					{
-						"height": 59,
-						"name": "",
-						"properties": {},
-						"type": "",
-						"visible": true,
-						"width": 59,
-						"x": 67,
-						"y": 449
-					}
-				],
-				"opacity": 1,
-				"properties": {
-					"spawnPoint": "True"
 				},
 				"type": "objectgroup",
 				"visible": true,
@@ -8344,19 +8484,19 @@
 		return entityLastPosition.y >= otherPosition.y + otherSize.height;
 	}
 
-	module.exports = function(ecs, data) { // eslint-disable-line no-unused-vars
-		data.entities.registerSearch("resolveCollisions", ["collisions","velocity","lastPosition","position"]);
+	module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
+		game.entities.registerSearch("resolveCollisions", ["collisions","velocity","lastPosition","position"]);
 		ecs.addEach(function(entity, elapsed) { // eslint-disable-line no-unused-vars
-			var entityCollisions = data.entities.get(entity, "collisions");
-			var entityPosition = data.entities.get(entity, "position");
-			var entitySize = data.entities.get(entity, "size");
-			var entityVelocity = data.entities.get(entity, "velocity");
-			var entityLastPosition = data.entities.get(entity, "lastPosition");
+			var entityCollisions = game.entities.get(entity, "collisions");
+			var entityPosition = game.entities.get(entity, "position");
+			var entitySize = game.entities.get(entity, "size");
+			var entityVelocity = game.entities.get(entity, "velocity");
+			var entityLastPosition = game.entities.get(entity, "lastPosition");
 
 			for (var i = 0; i < entityCollisions.length; i++) {
 				var other = entityCollisions[i];
-				var otherPosition = data.entities.get(other, "position");
-				var otherSize = data.entities.get(other, "size");
+				var otherPosition = game.entities.get(other, "position");
+				var otherSize = game.entities.get(other, "size");
 
 				if (wasLeft(entityLastPosition, entitySize, otherPosition)) {
 					entityPosition.x = otherPosition.x - entitySize.width;
@@ -8424,34 +8564,45 @@
 
 	module.exports = function(game) { // eslint-disable-line no-unused-vars
 		var file = __webpack_require__(82);
-		var tilemap = 1;
-		var player = 2;
-		var tilemap_component = game.entities.get(tilemap, "tilemap");
+		var tile, image, image_index, tile_pos;
+		var player = 1, container = 2;
 		var collider, layer, object;
 		for (var i = 0; i < file.layers.length; i++) {
 			layer = file.layers[i];
-			if (layer.name == tilemap_component.layer) {
-				tilemap_component.layer_index = i;
-			}
-			if (layer.name == "Collisions") {
-				for (var j = 0; j < layer.objects.length; j++) {
-					object = layer.objects[j];
-					collider = game.instantiatePrefab("collision");
-					game.entities.set(collider, "size", { "width": object.width, "height": object.height });
-					game.entities.set(collider, "position", { "x": object.x, "y": object.y });
+			if (layer.type == "tilelayer") {
+				for (j = 0; j < layer.data.length; j++) {
+					image_index = layer.data[j] - 1;
+					if (image_index >= 0) {
+						tile = game.instantiatePrefab("tile");
+						image = game.entities.get(tile, "image");
+						tile_pos = game.entities.get(tile, "position");
+						tile_pos.x = (j % file.width) * file.tilewidth;
+						tile_pos.y = Math.floor(j / file.height) * file.tileheight;
+						tile_pos.z = (layer.properties.Background == "True") ? -1 : 2;
+						image.name = file.tilesets[image_index].image;
+					}
 				}
 			}
-			if (layer.name == "Spawn") {
-				object = layer.objects[0];
-				game.entities.set(player, "position", { "x": object.x, "y": object.y });
+			if (layer.type == "objectgroup") {
+				for (var j = 0; j < layer.objects.length; j++) {
+					object = layer.objects[j];
+					if (object.properties.Collidable == "True") {
+						collider = game.instantiatePrefab("collision");
+						game.entities.set(collider, "size", { "width": object.width, "height": object.height });
+						game.entities.set(collider, "position", { "x": object.x, "y": object.y });
+					}
+					if (object.properties.Spawn == "True") {
+						game.entities.set(player, "position", { "x": object.x, "y": object.y });
+					}
+				}
 			}
 		}
 		var map_size = {
 			"width": file.width * file.tilewidth,
 			"height": file.height * file.tileheight
 		};
-		game.entities.set(tilemap, "size", map_size);
-		game.entities.set(player, "constrainPosition", { "id": 1 });
+		game.entities.set(container, "size", map_size);
+		game.entities.set(player, "constrainPosition", { "id": container });
 	};
 
 
@@ -8470,16 +8621,17 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./grass1.png": 89,
-		"./grass2.png": 90,
-		"./grass3.png": 91,
-		"./grass4.png": 92,
-		"./hole.png": 93,
-		"./logo.png": 94,
-		"./stone1.png": 95,
-		"./stone2.png": 96,
-		"./tree.png": 97,
-		"./tree2.png": 98
+		"./character.png": 89,
+		"./grass1.png": 90,
+		"./grass2.png": 91,
+		"./grass3.png": 92,
+		"./grass4.png": 93,
+		"./hole.png": 94,
+		"./logo.png": 95,
+		"./stone1.png": 96,
+		"./stone2.png": 97,
+		"./tree.png": 98,
+		"./tree2.png": 99
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -8499,64 +8651,70 @@
 /* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/grass1.png";
+	module.exports = __webpack_require__.p + "images/character.png";
 
 /***/ },
 /* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/grass2.png";
+	module.exports = __webpack_require__.p + "images/grass1.png";
 
 /***/ },
 /* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/grass3.png";
+	module.exports = __webpack_require__.p + "images/grass2.png";
 
 /***/ },
 /* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/grass4.png";
+	module.exports = __webpack_require__.p + "images/grass3.png";
 
 /***/ },
 /* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/hole.png";
+	module.exports = __webpack_require__.p + "images/grass4.png";
 
 /***/ },
 /* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/logo.png";
+	module.exports = __webpack_require__.p + "images/hole.png";
 
 /***/ },
 /* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/stone1.png";
+	module.exports = __webpack_require__.p + "images/logo.png";
 
 /***/ },
 /* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/stone2.png";
+	module.exports = __webpack_require__.p + "images/stone1.png";
 
 /***/ },
 /* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tree.png";
+	module.exports = __webpack_require__.p + "images/stone2.png";
 
 /***/ },
 /* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tree2.png";
+	module.exports = __webpack_require__.p + "images/tree.png";
 
 /***/ },
 /* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/tree2.png";
+
+/***/ },
+/* 100 */
 /***/ function(module, exports) {
 
 	function webpackContext(req) {
@@ -8565,20 +8723,20 @@
 	webpackContext.keys = function() { return []; };
 	webpackContext.resolve = webpackContext;
 	module.exports = webpackContext;
-	webpackContext.id = 99;
+	webpackContext.id = 100;
 
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./animations.json": 101,
-		"./entities.json": 102,
-		"./inputs.json": 103,
-		"./prefabs.json": 104,
-		"./scenes.json": 105,
-		"./systems.json": 106,
+		"./animations.json": 102,
+		"./entities.json": 103,
+		"./inputs.json": 104,
+		"./prefabs.json": 105,
+		"./scenes.json": 106,
+		"./systems.json": 107,
 		"./tilemap.json": 82
 	};
 	function webpackContext(req) {
@@ -8592,17 +8750,17 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 100;
+	webpackContext.id = 101;
 
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8616,36 +8774,22 @@
 					"y": 0
 				},
 				"follow": {
-					"id": 2,
+					"id": 1,
 					"distance": 100
 				},
 				"matchCanvasSize": true
 			},
 			{
 				"id": 1,
-				"name": "tilemap",
-				"tilemap": {
-					"file": "tilemap.json",
-					"layer": "Background"
-				},
-				"position": {
-					"x": 0,
-					"y": 0,
-					"z": 0
-				},
-				"size": {
-					"width": 10,
-					"height": 10
-				}
-			},
-			{
-				"id": 2,
 				"name": "player",
 				"player": true,
+				"image": {
+					"name": "character.png"
+				},
 				"position": {
 					"x": 0,
 					"y": 0,
-					"z": 2
+					"z": 1
 				},
 				"size": {
 					"width": 64,
@@ -8676,12 +8820,25 @@
 					"x": 0.97,
 					"y": 0.97
 				}
+			},
+			{
+				"id": 2,
+				"container": true,
+				"position": {
+					"x": 0,
+					"y": 0,
+					"z": -1
+				},
+				"size": {
+					"width": 0,
+					"height": 0
+				}
 			}
 		]
 	};
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8740,7 +8897,7 @@
 	};
 
 /***/ },
-/* 104 */
+/* 105 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8756,11 +8913,27 @@
 				"height": 64
 			},
 			"collisions": []
+		},
+		"tile": {
+			"name": "tile",
+			"tile": true,
+			"position": {
+				"x": 0,
+				"y": 0,
+				"z": -1
+			},
+			"size": {
+				"width": 0,
+				"height": 0
+			},
+			"image": {
+				"name": ""
+			}
 		}
 	};
 
 /***/ },
-/* 105 */
+/* 106 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8772,7 +8945,7 @@
 	};
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8871,12 +9044,6 @@
 			},
 			{
 				"name": "splat-ecs/lib/systems/draw-image",
-				"scenes": [
-					"main"
-				]
-			},
-			{
-				"name": "splat-ecs/lib/systems/draw-rectangles",
 				"scenes": [
 					"main"
 				]

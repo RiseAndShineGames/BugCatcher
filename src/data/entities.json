@@ -9,7 +9,7 @@
 			"y": 0
 		},
 		"follow": {
-			"id": 2,
+			"id": 1,
 			"distance": 100
 		},
 		"matchCanvasSize": true
@@ -24,7 +24,7 @@
 		"position": {
 			"x": 0,
 			"y": 0,
-			"z": 10
+			"z": 1
 		},
 		"size": {
 			"width": 64,
