@@ -1,5 +1,4 @@
 "use strict";
-var prefabLibrary = require("prefabLib");
 
 /**
  * Tilesets
