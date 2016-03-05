@@ -75,11 +75,11 @@
 	var imageContext = __webpack_require__(88);
 	var imageManifest = generateManifest(imageContext.keys(), "images");
 
-	var soundContext = __webpack_require__(101);
+	var soundContext = __webpack_require__(103);
 	var soundManifest = generateManifest(soundContext.keys(), "sounds");
 
 	var localDataPath = "./data";
-	var localDataRequire = __webpack_require__(102);
+	var localDataRequire = __webpack_require__(104);
 
 	function customRequire(path) {
 		if (path.indexOf(splatSystemPath) === 0) {
@@ -8006,106 +8006,106 @@
 		"layers": [
 			{
 				"data": [
-					4,
-					4,
-					5,
-					3,
-					4,
-					4,
-					4,
-					2,
-					2,
-					2,
-					2,
-					4,
-					4,
-					5,
-					3,
-					3,
-					5,
-					2,
-					3,
-					2,
-					5,
-					5,
-					10,
-					10,
-					10,
-					10,
-					3,
-					5,
-					2,
-					5,
-					5,
-					4,
-					2,
-					2,
-					10,
-					5,
-					3,
-					3,
-					3,
-					3,
-					2,
-					4,
-					3,
-					5,
-					10,
-					3,
-					5,
-					4,
-					3,
-					3,
-					2,
-					4,
-					3,
-					5,
-					10,
-					3,
-					2,
-					5,
-					3,
-					5,
-					4,
+					1,
+					1,
 					6,
-					4,
-					3,
-					2,
-					3,
-					2,
-					12,
-					12,
-					4,
+					1,
+					1,
+					1,
+					1,
+					17,
 					5,
-					3,
-					2,
-					3,
-					2,
-					2,
-					2,
+					18,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
 					4,
-					4,
-					3,
-					4,
-					4,
-					3,
-					4,
-					3,
-					4,
-					4,
+					18,
+					1,
+					6,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
 					5,
-					3,
+					18,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
+					4,
+					18,
+					1,
+					1,
+					1,
+					1,
+					1,
+					6,
+					1,
+					17,
+					4,
+					18,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
 					5,
-					3,
-					3,
-					4,
+					18,
+					6,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
 					5,
+					18,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
 					4,
-					4,
-					4,
+					18,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
 					5,
-					2,
-					2
+					18,
+					1,
+					1,
+					6,
+					1,
+					1,
+					1,
+					1,
+					17,
+					4,
+					18
 				],
 				"height": 10,
 				"name": "Background",
@@ -8154,40 +8154,40 @@
 					0,
 					0,
 					0,
+					19,
+					20,
+					21,
+					22,
 					0,
 					0,
 					0,
 					0,
 					0,
 					0,
+					23,
+					24,
+					25,
+					26,
 					0,
 					0,
 					0,
 					0,
 					0,
 					0,
+					27,
+					28,
+					29,
+					30,
 					0,
 					0,
 					0,
 					0,
 					0,
 					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					11,
-					11,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
+					31,
+					32,
+					33,
+					34,
 					0,
 					0,
 					0,
@@ -8239,42 +8239,6 @@
 				"name": "Objects",
 				"objects": [
 					{
-						"height": 59,
-						"name": "",
-						"properties": {
-							"Collidable": "True"
-						},
-						"type": "",
-						"visible": true,
-						"width": 119,
-						"x": 452,
-						"y": 386
-					},
-					{
-						"height": 192,
-						"name": "",
-						"properties": {
-							"Collidable": "True"
-						},
-						"type": "",
-						"visible": true,
-						"width": 64,
-						"x": 256,
-						"y": 192
-					},
-					{
-						"height": 64,
-						"name": "",
-						"properties": {
-							"Collidable": "True"
-						},
-						"type": "",
-						"visible": true,
-						"width": 256,
-						"x": 128,
-						"y": 128
-					},
-					{
 						"height": 64,
 						"name": "",
 						"properties": {
@@ -8283,8 +8247,20 @@
 						"type": "",
 						"visible": true,
 						"width": 64,
-						"x": 64,
-						"y": 384
+						"x": 512,
+						"y": 576
+					},
+					{
+						"height": 55,
+						"name": "",
+						"properties": {
+							"Collidable": "True"
+						},
+						"type": "",
+						"visible": true,
+						"width": 120,
+						"x": 257,
+						"y": 395
 					}
 				],
 				"opacity": 1,
@@ -8301,11 +8277,23 @@
 		"tilesets": [
 			{
 				"firstgid": 1,
-				"image": "ground_tiles.png",
-				"imageheight": 128,
+				"image": "grass-tiles-2-small.png",
+				"imageheight": 192,
 				"imagewidth": 384,
 				"margin": 0,
-				"name": "ground_tiles",
+				"name": "grass-tiles-2-small",
+				"properties": {},
+				"spacing": 0,
+				"tileheight": 64,
+				"tilewidth": 64
+			},
+			{
+				"firstgid": 19,
+				"image": "tree2-final.png",
+				"imageheight": 256,
+				"imagewidth": 256,
+				"margin": 0,
+				"name": "tree2-final",
 				"properties": {},
 				"spacing": 0,
 				"tileheight": 64,
@@ -8414,36 +8402,30 @@
 
 	"use strict";
 
-	/**
-	 * Tilesets
-	 * What I know:
-	 *		imagewidth
-	 *		imageheight
-	 *		tilewidth
-	 *		tileheight
-	 * cols = imagewidth / tilewidth;
-	 * rows = imageheight / tileheight;
-	 * var x = (i % cols) * tilewidth;
-	 * var y = Math.floor(i/rows) * tileheight;
-	 */
-
 	module.exports = function(game) { // eslint-disable-line no-unused-vars
 		var file = __webpack_require__(82);
-
 		// Tile layer variables
-		var tile, image, image_index, tile_pos;
+		var tile, image, image_index, tile_pos, cols, tileset_index = 0;
 		var collider, layer, object;
-		var cols = file.tilesets[0].imagewidth / file.tilesets[0].tilewidth;
-		
+		var player = 1, container = 2;
+
 		for (var i = 0; i < file.layers.length; i++) {
 			layer = file.layers[i];
 
 			// Render Tile Layers
 			if (layer.type == "tilelayer") {
 				for (j = 0; j < layer.data.length; j++) {
+					
+					// Select tileset index based on firstgid and image index
+					// Set image index minus firstgid for positioning math
+					for (var k = 0; k < file.tilesets.length; k++) {
+						if (layer.data[j] > file.tilesets[k].firstgid) {
+							tileset_index = k;
+						}
+					}
+					cols = file.tilesets[tileset_index].imagewidth / file.tilesets[tileset_index].tilewidth;
+					image_index = layer.data[j] - file.tilesets[tileset_index].firstgid;
 
-					// Tiled gives 1-based indexes. Subtract one for position math
-					image_index = layer.data[j] - 1;
 					if (image_index >= 0) {
 
 						// Create tile and get properties
@@ -8457,15 +8439,15 @@
 
 						// Character position z: 1 so anything without background true will layer over player
 						tile_pos.z = (layer.properties.Background == "True") ? -1 : 2;
-
+						
 						// Select which "tile" of the tileset image to render
-						image.name = file.tilesets[0].image;
-						image.sourceWidth = file.tilesets[0].tilewidth;
-						image.sourceHeight = file.tilesets[0].tileheight;
-						image.destinationWidth = file.tilesets[0].tilewidth;
-						image.destinationHeight = file.tilesets[0].tileheight;
-						image.sourceX = (image_index % cols) * file.tilesets[0].tilewidth;
-						image.sourceY = Math.floor(image_index / cols) * file.tilesets[0].tileheight;
+						image.name = file.tilesets[tileset_index].image;
+						image.sourceWidth = file.tilesets[tileset_index].tilewidth;
+						image.sourceHeight = file.tilesets[tileset_index].tileheight;
+						image.destinationWidth = file.tilesets[tileset_index].tilewidth;
+						image.destinationHeight = file.tilesets[tileset_index].tileheight;
+						image.sourceX = (image_index % cols) * file.tilesets[tileset_index].tilewidth;
+						image.sourceY = Math.floor(image_index / cols) * file.tilesets[tileset_index].tileheight;
 						
 					}
 				}
@@ -8493,7 +8475,6 @@
 		}
 
 		// Define map bounding box for contrain position
-		var player = 1, container = 2;
 		var map_size = {
 			"width": file.width * file.tilewidth,
 			"height": file.height * file.tileheight
@@ -8519,17 +8500,19 @@
 
 	var map = {
 		"./character.png": 89,
-		"./grass1.png": 90,
-		"./grass2.png": 91,
-		"./grass3.png": 92,
-		"./grass4.png": 93,
-		"./ground_tiles.png": 94,
-		"./hole.png": 95,
-		"./logo.png": 96,
-		"./stone1.png": 97,
-		"./stone2.png": 98,
-		"./tree.png": 99,
-		"./tree2.png": 100
+		"./grass-tiles-2-small.png": 90,
+		"./grass1.png": 91,
+		"./grass2.png": 92,
+		"./grass3.png": 93,
+		"./grass4.png": 94,
+		"./ground_tiles.png": 95,
+		"./hole.png": 96,
+		"./logo.png": 97,
+		"./stone1.png": 98,
+		"./stone2.png": 99,
+		"./tree.png": 100,
+		"./tree2-final.png": 101,
+		"./tree2.png": 102
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -8555,70 +8538,82 @@
 /* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/grass1.png";
+	module.exports = __webpack_require__.p + "images/grass-tiles-2-small.png";
 
 /***/ },
 /* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/grass2.png";
+	module.exports = __webpack_require__.p + "images/grass1.png";
 
 /***/ },
 /* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/grass3.png";
+	module.exports = __webpack_require__.p + "images/grass2.png";
 
 /***/ },
 /* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/grass4.png";
+	module.exports = __webpack_require__.p + "images/grass3.png";
 
 /***/ },
 /* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/ground_tiles.png";
+	module.exports = __webpack_require__.p + "images/grass4.png";
 
 /***/ },
 /* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/hole.png";
+	module.exports = __webpack_require__.p + "images/ground_tiles.png";
 
 /***/ },
 /* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/logo.png";
+	module.exports = __webpack_require__.p + "images/hole.png";
 
 /***/ },
 /* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/stone1.png";
+	module.exports = __webpack_require__.p + "images/logo.png";
 
 /***/ },
 /* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/stone2.png";
+	module.exports = __webpack_require__.p + "images/stone1.png";
 
 /***/ },
 /* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tree.png";
+	module.exports = __webpack_require__.p + "images/stone2.png";
 
 /***/ },
 /* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tree2.png";
+	module.exports = __webpack_require__.p + "images/tree.png";
 
 /***/ },
 /* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/tree2-final.png";
+
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/tree2.png";
+
+/***/ },
+/* 103 */
 /***/ function(module, exports) {
 
 	function webpackContext(req) {
@@ -8627,20 +8622,20 @@
 	webpackContext.keys = function() { return []; };
 	webpackContext.resolve = webpackContext;
 	module.exports = webpackContext;
-	webpackContext.id = 101;
+	webpackContext.id = 103;
 
 
 /***/ },
-/* 102 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./animations.json": 103,
-		"./entities.json": 104,
-		"./inputs.json": 105,
-		"./prefabs.json": 106,
-		"./scenes.json": 107,
-		"./systems.json": 108,
+		"./animations.json": 105,
+		"./entities.json": 106,
+		"./inputs.json": 107,
+		"./prefabs.json": 108,
+		"./scenes.json": 109,
+		"./systems.json": 110,
 		"./tilemap.json": 82
 	};
 	function webpackContext(req) {
@@ -8654,17 +8649,17 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 102;
+	webpackContext.id = 104;
 
 
 /***/ },
-/* 103 */
+/* 105 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 /***/ },
-/* 104 */
+/* 106 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8742,7 +8737,7 @@
 	};
 
 /***/ },
-/* 105 */
+/* 107 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8801,7 +8796,7 @@
 	};
 
 /***/ },
-/* 106 */
+/* 108 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8837,7 +8832,7 @@
 	};
 
 /***/ },
-/* 107 */
+/* 109 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8849,7 +8844,7 @@
 	};
 
 /***/ },
-/* 108 */
+/* 110 */
 /***/ function(module, exports) {
 
 	module.exports = {
