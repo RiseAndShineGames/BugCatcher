@@ -1,35 +1,29 @@
 "use strict";
 
-/**
- * Tilesets
- * What I know:
- *		imagewidth
- *		imageheight
- *		tilewidth
- *		tileheight
- * cols = imagewidth / tilewidth;
- * rows = imageheight / tileheight;
- * var x = (i % cols) * tilewidth;
- * var y = Math.floor(i/rows) * tileheight;
- */
-
 module.exports = function(game) { // eslint-disable-line no-unused-vars
 	var file = require("../data/tilemap.json");
-
 	// Tile layer variables
-	var tile, image, image_index, tile_pos;
+	var tile, image, image_index, tile_pos, cols, tileset_index = 0;
 	var collider, layer, object;
-	var cols = file.tilesets[0].imagewidth / file.tilesets[0].tilewidth;
-	
+	var player = 1, container = 2;
+
 	for (var i = 0; i < file.layers.length; i++) {
 		layer = file.layers[i];
 
 		// Render Tile Layers
 		if (layer.type == "tilelayer") {
 			for (j = 0; j < layer.data.length; j++) {
+				
+				// Select tileset index based on firstgid and image index
+				// Set image index minus firstgid for positioning math
+				for (var k = 0; k < file.tilesets.length; k++) {
+					if (layer.data[j] > file.tilesets[k].firstgid) {
+						tileset_index = k;
+					}
+				}
+				cols = file.tilesets[tileset_index].imagewidth / file.tilesets[tileset_index].tilewidth;
+				image_index = layer.data[j] - file.tilesets[tileset_index].firstgid;
 
-				// Tiled gives 1-based indexes. Subtract one for position math
-				image_index = layer.data[j] - 1;
 				if (image_index >= 0) {
 
 					// Create tile and get properties
@@ -43,15 +37,15 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 
 					// Character position z: 1 so anything without background true will layer over player
 					tile_pos.z = (layer.properties.Background == "True") ? -1 : 2;
-
+					
 					// Select which "tile" of the tileset image to render
-					image.name = file.tilesets[0].image;
-					image.sourceWidth = file.tilesets[0].tilewidth;
-					image.sourceHeight = file.tilesets[0].tileheight;
-					image.destinationWidth = file.tilesets[0].tilewidth;
-					image.destinationHeight = file.tilesets[0].tileheight;
-					image.sourceX = (image_index % cols) * file.tilesets[0].tilewidth;
-					image.sourceY = Math.floor(image_index / cols) * file.tilesets[0].tileheight;
+					image.name = file.tilesets[tileset_index].image;
+					image.sourceWidth = file.tilesets[tileset_index].tilewidth;
+					image.sourceHeight = file.tilesets[tileset_index].tileheight;
+					image.destinationWidth = file.tilesets[tileset_index].tilewidth;
+					image.destinationHeight = file.tilesets[tileset_index].tileheight;
+					image.sourceX = (image_index % cols) * file.tilesets[tileset_index].tilewidth;
+					image.sourceY = Math.floor(image_index / cols) * file.tilesets[tileset_index].tileheight;
 					
 				}
 			}
@@ -79,7 +73,6 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 	}
 
 	// Define map bounding box for contrain position
-	var player = 1, container = 2;
 	var map_size = {
 		"width": file.width * file.tilewidth,
 		"height": file.height * file.tileheight
