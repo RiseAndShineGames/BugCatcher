@@ -31,8 +31,8 @@
 			"y": 0
 		},
 		"size": {
-			"width": 64,
-			"height": 64
+			"width": 32,
+			"height": 32
 		},
 		"velocity": {
 			"x": 0,
@@ -59,6 +59,35 @@
 			"x": 0.97,
 			"y": 0.97
 		}
+	}
+	],
+	"battle": [
+	{
+		"id": 0,
+		"camera": true,
+		"position": {
+			"x": 0,
+			"y": 0
+		},
+		"follow": {
+			"id": 1,
+			"distance": 100
+		},
+		"matchCanvasSize": true,
+		"strokeStyle": "red"
+	},
+	{
+		"id": 1,
+		"return": true,
+		"position": {
+			"x": 100,
+			"y": 100
+		},
+		"size": {
+			"width": 150,
+			"height": 75
+		},
+		"strokeStyle": "red"
 	}
 	]
 }

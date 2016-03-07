@@ -12,6 +12,9 @@ function wasAbove(entityLastPosition, entitySize, otherPosition) {
 function wasBelow(entityLastPosition, otherPosition, otherSize) {
 	return entityLastPosition.y >= otherPosition.y + otherSize.height;
 }
+function getRandomInt(min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
 	ecs.addEach(function(entity, elapsed) { // eslint-disable-line no-unused-vars
@@ -23,25 +26,42 @@ module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
 
 		for (var i = 0; i < entityCollisions.length; i++) {
 			var other = entityCollisions[i];
+			var tiledProperties = game.entities.get(other, "tiledProperties");
 			var otherPosition = game.entities.get(other, "position");
 			var otherSize = game.entities.get(other, "size");
 
-			if (wasLeft(entityLastPosition, entitySize, otherPosition)) {
-				entityPosition.x = otherPosition.x - entitySize.width;
-				entityVelocity.x = 0;
+			if (typeof tiledProperties !== undefined) {
+
+				if (tiledProperties.Collidable) {
+					if (wasLeft(entityLastPosition, entitySize, otherPosition)) {
+						entityPosition.x = otherPosition.x - entitySize.width;
+						entityVelocity.x = 0;
+					}
+					if (wasRight(entityLastPosition, otherPosition, otherSize)) {
+						entityPosition.x = otherPosition.x + otherSize.width;
+						entityVelocity.x = 0;
+					}
+					if (wasAbove(entityLastPosition, entitySize, otherPosition)) {
+						entityPosition.y = otherPosition.y - entitySize.height;
+						entityVelocity.y = 0;
+					}
+					if (wasBelow(entityLastPosition, otherPosition, otherSize)) {
+						entityPosition.y = otherPosition.y + otherSize.height;
+						entityVelocity.y = 0;
+					}
+				} else if (tiledProperties.SpawnBug) {
+					var spawnChance = tiledProperties.SpawnChance;
+					var chance = getRandomInt(0, 99);
+					if (chance < spawnChance) {
+						var args = {
+							"player_pos": entityPosition
+						};
+						game.switchScene("battle", args);
+					}
+				}
+
 			}
-			if (wasRight(entityLastPosition, otherPosition, otherSize)) {
-				entityPosition.x = otherPosition.x + otherSize.width;
-				entityVelocity.x = 0;
-			}
-			if (wasAbove(entityLastPosition, entitySize, otherPosition)) {
-				entityPosition.y = otherPosition.y - entitySize.height;
-				entityVelocity.y = 0;
-			}
-			if (wasBelow(entityLastPosition, otherPosition, otherSize)) {
-				entityPosition.y = otherPosition.y + otherSize.height;
-				entityVelocity.y = 0;
-			}
+
 		}
 	}, "player");
 

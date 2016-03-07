@@ -3,61 +3,61 @@
 	{
 		"name": "splat-ecs/lib/systems/match-canvas-size",
 		"scenes": [
-			"main"
+			"main", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/advance-timers",
 		"scenes": [
-			"main"
+			"main", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/advance-animations",
 		"scenes": [
-			"main"
+			"main", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/control-player",
 		"scenes": [
-			"main"
+			"main", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/apply-movement-2d",
 		"scenes": [
-			"main"
+			"main", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/apply-velocity",
 		"scenes": [
-			"main"
+			"main", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/apply-friction",
 		"scenes": [
-			"main"
+			"main", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/constrain-position",
 		"scenes": [
-			"main"
+			"main", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/follow-parent",
 		"scenes": [
-			"main"
+			"main", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/box-collider",
 		"scenes": [
-			"main"
+			"main", "battle"
 			]
 	},
 	{
@@ -71,37 +71,49 @@
 		"scenes": [
 			"main"
 			]
+	},
+	{
+		"name": "./systems/simulation/temp-system",
+		"scenes": [
+			"battle"
+			]
 	}
 	],
 		"renderer": [
 		{
 			"name": "splat-ecs/lib/systems/clear-screen",
 			"scenes": [
-				"main"
+				"main", "battle"
 				]
 		},
 		{
 			"name": "splat-ecs/lib/systems/viewport-move-to-camera",
 			"scenes": [
-				"main"
+				"main", "battle"
 				]
 		},
 		{
 			"name": "splat-ecs/lib/systems/draw-image",
 			"scenes": [
-				"main"
+				"main", "battle"
+				]
+		},
+		{
+			"name": "splat-ecs/lib/systems/draw-rectangles",
+			"scenes": [
+				"battle"
 				]
 		},
 		{
 			"name": "splat-ecs/lib/systems/viewport-reset",
 			"scenes": [
-				"main"
+				"main", "battle"
 				]
 		},
 		{
 			"name": "splat-ecs/lib/systems/draw-frame-rate",
 			"scenes": [
-				"main"
+				"main", "battle"
 				]
 		}
 	]
