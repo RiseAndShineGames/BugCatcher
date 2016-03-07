@@ -23,6 +23,7 @@ module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
 		var entitySize = game.entities.get(entity, "size");
 		var entityVelocity = game.entities.get(entity, "velocity");
 		var entityLastPosition = game.entities.get(entity, "lastPosition");
+		var timers = game.entities.get(entity, "timers");
 
 		for (var i = 0; i < entityCollisions.length; i++) {
 			var other = entityCollisions[i];
@@ -51,8 +52,8 @@ module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
 					}
 				} else if (tiledProperties.SpawnBug) {
 					var spawnChance = tiledProperties.SpawnChance;
-					var chance = getRandomInt(0, 99);
-					if (chance < spawnChance) {
+					var chance = getRandomInt(0, 999);
+					if (chance < spawnChance && !timers.spawn_delay.running) {
 						var args = {
 							"player_pos": entityPosition
 						};

@@ -8,10 +8,10 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 
 	var spawn_pos;
 	var spawn = game.entities.find("spawn");
-	if (spawn.length > 0) {
-		spawn_pos = game.entities.get(spawn, "position");
-	} else if (game.arguments.player_pos) {
+	if (game.arguments.player_pos) {
 		spawn_pos = game.arguments.player_pos;	
+	} else if (spawn.length > 0) {
+		spawn_pos = game.entities.get(spawn, "position");
 	} else {
 		spawn_pos = { "x": 0, "y": 0 };
 	}

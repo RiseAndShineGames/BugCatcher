@@ -67,7 +67,7 @@
                     {
                      "Collidable":"False",
                      "SpawnBug":"True",
-                     "SpawnChance":"1"
+                     "SpawnChance":"4"
                     },
                  "type":"",
                  "visible":true,

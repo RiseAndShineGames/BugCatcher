@@ -61,7 +61,7 @@
 			]
 	},
 	{
-		"name": "./systems/simulation/sample-simulation-system",
+		"name": "./systems/simulation/main-collisions",
 		"scenes": [
 			"main"
 			]

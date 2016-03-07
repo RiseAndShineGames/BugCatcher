@@ -18,6 +18,13 @@
 		"id": 1,
 		"name": "player",
 		"player": true,
+		"timers": {
+			"spawn_delay": {
+				"running": true,
+				"time": 0,
+				"max": 1500
+			}
+		},
 		"image": {
 			"name": "character.png"
 		},
@@ -68,10 +75,6 @@
 		"position": {
 			"x": 0,
 			"y": 0
-		},
-		"follow": {
-			"id": 1,
-			"distance": 100
 		},
 		"matchCanvasSize": true,
 		"strokeStyle": "red"
