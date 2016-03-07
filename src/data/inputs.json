@@ -73,6 +73,12 @@
 				"device": "gamepad",
 				"button": "left stick right"
 			}
-		]
+		],
+			"action": [
+			{
+				"device": "mouse",
+				"button": 0
+			}
+			]
 	}
 }
