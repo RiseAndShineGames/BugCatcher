@@ -1,5 +1,5 @@
 {
-	"name": "Bug Catcher",
+	"name": "bug-catcher",
 	"version": "0.0.1",
 	"description": "Top down tile based testing",
 	"private": true,
