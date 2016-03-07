@@ -14,7 +14,6 @@ function wasBelow(entityLastPosition, otherPosition, otherSize) {
 }
 
 module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
-	game.entities.registerSearch("resolveCollisions", ["collisions","velocity","lastPosition","position"]);
 	ecs.addEach(function(entity, elapsed) { // eslint-disable-line no-unused-vars
 		var entityCollisions = game.entities.get(entity, "collisions");
 		var entityPosition = game.entities.get(entity, "position");

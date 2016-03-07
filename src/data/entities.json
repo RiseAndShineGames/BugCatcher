@@ -26,6 +26,10 @@
 			"y": 0,
 			"z": 1
 		},
+		"lastPosition": {
+			"x": 0,
+			"y": 0
+		},
 		"size": {
 			"width": 64,
 			"height": 64
