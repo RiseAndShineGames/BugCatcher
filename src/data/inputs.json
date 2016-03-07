@@ -1,54 +1,84 @@
 {
-	"up": {
-		"type": "button",
-		"inputs": [
-		{
-			"device": "keyboard",
-			"key": "w"
-		},
-		{
-			"device": "keyboard",
-			"key": "up"
-		}
-		]
+	"axes": {
 	},
-	"down": {
-		"type": "button",
-		"inputs": [
+	"buttons": {
+		"up": [
 		{
 			"device": "keyboard",
-			"key": "s"
+			"button": "w"
 		},
 		{
 			"device": "keyboard",
-			"key": "down"
-		}
-		]
-	},
-	"left": {
-		"type": "button",
-		"inputs": [
-		{
-			"device": "keyboard",
-			"key": "a"
+			"button": "up"
 		},
 		{
-			"device": "keyboard",
-			"key": "left"
-		}
-		]
-	},
-	"right": {
-		"type": "button",
-		"inputs": [
-		{
-			"device": "keyboard",
-			"key": "d"
+			"device": "gamepad",
+			"button": "dpad up"
 		},
 		{
-			"device": "keyboard",
-			"key": "right"
+			"device": "gamepad",
+			"button": "left stick up"
 		}
-		]
+		],
+			"down": [
+			{
+				"device": "keyboard",
+				"button": "s"
+			},
+			{
+				"device": "keyboard",
+				"button": "down"
+			},
+			{
+				"device": "gamepad",
+				"button": "dpad down"
+			},
+			{
+				"device": "gamepad",
+				"button": "left stick down"
+			}
+		],
+			"left": [
+			{
+				"device": "keyboard",
+				"button": "a"
+			},
+			{
+				"device": "keyboard",
+				"button": "left"
+			},
+			{
+				"device": "gamepad",
+				"button": "dpad left"
+			},
+			{
+				"device": "gamepad",
+				"button": "left stick left"
+			}
+		],
+			"right": [
+			{
+				"device": "keyboard",
+				"button": "d"
+			},
+			{
+				"device": "keyboard",
+				"button": "right"
+			},
+			{
+				"device": "gamepad",
+				"button": "dpad right"
+			},
+			{
+				"device": "gamepad",
+				"button": "left stick right"
+			}
+		],
+			"action": [
+			{
+				"device": "mouse",
+				"button": 0
+			}
+			]
 	}
 }

@@ -50,19 +50,19 @@
 	var context = canvas.getContext("2d");
 
 	var Splat = __webpack_require__(1);
-	__webpack_require__(42);
+	__webpack_require__(44);
 
 	// This is some webpack magic to ensure the dynamically required scripts are loaded
 
 	var splatSystemPath = "splat-ecs/lib/systems";
 	// WARNING: can't use splatSystemPath variable here, or webpack won't pick it up
-	var splatSystemRequire = __webpack_require__(43);
+	var splatSystemRequire = __webpack_require__(45);
 
 	var localSystemPath = "./systems";
-	var localSystemRequire = __webpack_require__(80);
+	var localSystemRequire = __webpack_require__(81);
 
 	var localScriptPath = "./scripts";
-	var localScriptRequire = __webpack_require__(85);
+	var localScriptRequire = __webpack_require__(87);
 
 	function generateManifest(files, folder) {
 		return files.reduce(function(manifest, file) {
@@ -72,14 +72,14 @@
 		}, {});
 	}
 
-	var imageContext = __webpack_require__(88);
+	var imageContext = __webpack_require__(94);
 	var imageManifest = generateManifest(imageContext.keys(), "images");
 
-	var soundContext = __webpack_require__(101);
+	var soundContext = __webpack_require__(112);
 	var soundManifest = generateManifest(soundContext.keys(), "sounds");
 
 	var localDataPath = "./data";
-	var localDataRequire = __webpack_require__(102);
+	var localDataRequire = __webpack_require__(113);
 
 	function customRequire(path) {
 		if (path.indexOf(splatSystemPath) === 0) {
@@ -140,31 +140,31 @@
 		AStar: __webpack_require__(5),
 		BinaryHeap: __webpack_require__(6),
 		Game: __webpack_require__(7),
-		iap: __webpack_require__(22),
+		iap: __webpack_require__(24),
 		ImageLoader: __webpack_require__(8),
 		Input: __webpack_require__(9),
-		leaderboards: __webpack_require__(23),
-		loadingScene: __webpack_require__(24),
-		math: __webpack_require__(25),
-		openUrl: __webpack_require__(27),
-		NinePatch: __webpack_require__(28),
-		Particles: __webpack_require__(29),
-		saveData: __webpack_require__(30),
-		Scene: __webpack_require__(13),
-		SoundLoader: __webpack_require__(21),
+		leaderboards: __webpack_require__(25),
+		loadingScene: __webpack_require__(26),
+		math: __webpack_require__(27),
+		openUrl: __webpack_require__(29),
+		NinePatch: __webpack_require__(30),
+		Particles: __webpack_require__(31),
+		saveData: __webpack_require__(32),
+		Scene: __webpack_require__(15),
+		SoundLoader: __webpack_require__(23),
 
 		components: {
-			animation: __webpack_require__(31),
-			camera: __webpack_require__(32),
-			friction: __webpack_require__(33),
-			image: __webpack_require__(34),
-			movement2d: __webpack_require__(35),
-			playableArea: __webpack_require__(36),
-			playerController2d: __webpack_require__(37),
-			position: __webpack_require__(38),
-			size: __webpack_require__(39),
-			timers: __webpack_require__(40),
-			velocity: __webpack_require__(41)
+			animation: __webpack_require__(33),
+			camera: __webpack_require__(34),
+			friction: __webpack_require__(35),
+			image: __webpack_require__(36),
+			movement2d: __webpack_require__(37),
+			playableArea: __webpack_require__(38),
+			playerController2d: __webpack_require__(39),
+			position: __webpack_require__(40),
+			size: __webpack_require__(41),
+			timers: __webpack_require__(42),
+			velocity: __webpack_require__(43)
 		}
 	};
 
@@ -729,8 +729,8 @@
 
 	var ImageLoader = __webpack_require__(8);
 	var Input = __webpack_require__(9);
-	var Scene = __webpack_require__(13);
-	var SoundLoader = __webpack_require__(21);
+	var Scene = __webpack_require__(15);
+	var SoundLoader = __webpack_require__(23);
 
 	function clone(obj) {
 		if (obj === undefined) {
@@ -1005,39 +1005,62 @@
 
 	"use strict";
 
-	var Keyboard = __webpack_require__(10);
-	var keyMap = __webpack_require__(11).US;
+	var Gamepad = __webpack_require__(10);
+	var Keyboard = __webpack_require__(12);
+	var keyMap = __webpack_require__(13).US;
 	var keyboard = new Keyboard(keyMap);
-	var Mouse = __webpack_require__(12);
+	var Mouse = __webpack_require__(14);
 
 	function Input(config, canvas) {
 		this.config = config;
+		this.gamepad = new Gamepad();
 		this.mouse = new Mouse(canvas);
 		this.lastButtonState = {};
 		this.delayedButtonUpdates = {};
 	}
+	Input.prototype.axis = function(name) {
+		var input = this.config.axes[name];
+		if (input === undefined) {
+			console.error("No such axis: " + name);
+			return false;
+		}
+		for (var i = 0; i < input.length; i++) {
+			var physicalInput = input[i];
+			var device = physicalInput.device;
+			if (device === "mouse") {
+				if (physicalInput.axis === "x") {
+					return this.mouse.x;
+				}
+				if (physicalInput.axis === "y") {
+					return this.mouse.y;
+				}
+			}
+			if (device === "gamepad") {
+				return this.gamepad.axis(0, physicalInput.axis);
+			}
+		}
+	};
 	Input.prototype.button = function(name) {
-		var input = this.config[name];
+		var input = this.config.buttons[name];
 		if (input === undefined) {
 			console.error("No such button: " + name);
 			return false;
 		}
-		if (input.type !== "button") {
-			console.error("\"" + name + "\" is not a button");
-			return false;
-		}
-		for (var i = 0; i < input.inputs.length; i++) {
-			var physicalInput = input.inputs[i];
+		for (var i = 0; i < input.length; i++) {
+			var physicalInput = input[i];
 			var device = physicalInput.device;
 			if (device === "keyboard") {
-				var key = physicalInput.key;
-				if (keyboard.isPressed(key)) {
+				if (keyboard.isPressed(physicalInput.button)) {
 					return true;
 				}
 			}
 			if (device === "mouse") {
-				var button = physicalInput.button;
-				if (this.mouse.isPressed(button)) {
+				if (this.mouse.isPressed(physicalInput.button)) {
+					return true;
+				}
+			}
+			if (device === "gamepad") {
+				if (this.gamepad.button(0, physicalInput.button)) {
 					return true;
 				}
 			}
@@ -1071,6 +1094,7 @@
 		return !current && last;
 	};
 	Input.prototype.processUpdates = function() {
+		this.gamepad.update();
 		Object.keys(this.delayedButtonUpdates).forEach(function(name) {
 			this.lastButtonState[name] = this.delayedButtonUpdates[name];
 			delete this.delayedButtonUpdates[name];
@@ -1082,6 +1106,786 @@
 
 /***/ },
 /* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var mappings = __webpack_require__(11);
+
+	function getMapping(gamepadId, userAgent) {
+		return mappings.filter(function(mapping) {
+			return gamepadId.indexOf(mapping.id) !== -1 && userAgent.indexOf(mapping.userAgent) !== -1;
+		})[0] || mappings[0];
+	}
+
+	function transformButton(mapping, gp, button, i) {
+		var mb = mapping.buttons[i] || { name: "button " + i };
+		gp.buttons[mb.name] = button.pressed;
+		if (mb.axis) {
+			if (button.pressed) {
+				gp.axes[mb.axis] = mb.axisValue;
+			} else if (gp.axes[mb.axis] === undefined) {
+				gp.axes[mb.axis] = 0;
+			}
+		}
+		return gp;
+	}
+
+	function scaleAxis(axis, scale) {
+		if (scale === "to positive") {
+			return (axis + 1.0) / 2.0;
+		}
+		if (scale === "to negative") {
+			return (axis + 1.0) / -2.0;
+		}
+		return axis;
+	}
+
+	function transformAxis(mapping, threshold, gp, axis, i) {
+		var ma = mapping.axes[i] || { name: "axis " + i };
+		gp.axes[ma.name] = scaleAxis(axis, ma.scale);
+		if (ma.buttons) {
+			if (ma.buttons[0] !== null) {
+				gp.buttons[ma.buttons[0]] = axis < -threshold;
+			}
+			if (ma.buttons[1] !== null) {
+				gp.buttons[ma.buttons[1]] = axis > threshold;
+			}
+		}
+		return gp;
+	}
+
+	function transformGamepad(threshold, gamepad) {
+		var gp = {
+			id: gamepad.id,
+			buttons: {},
+			axes: {}
+		};
+		var mapping = getMapping(gamepad.id, navigator.userAgent);
+		gp = gamepad.buttons.reduce(transformButton.bind(undefined, mapping), gp),
+		gp = gamepad.axes.reduce(transformAxis.bind(undefined, mapping, threshold), gp);
+		return gp;
+	}
+
+	function isDefined(val) {
+		return val !== undefined;
+	}
+
+	function Gamepad() {
+		this.threshold = 0.05;
+		this.gamepads = [];
+	}
+	Gamepad.prototype.update = function() {
+		// navigator.getGamepads() returns an array-like object, not an actual object
+		// so convert to an array so we can call map()
+		//
+		// WTF: webkit always returns 4 gamepads, so remove the undefined ones
+		var gamepads = Array.prototype.slice.call(navigator.getGamepads()).filter(isDefined);
+		this.gamepads = gamepads.map(transformGamepad.bind(undefined, this.threshold));
+	};
+	Gamepad.prototype.axis = function(gamepad, axis) {
+		if (gamepad >= this.gamepads.length) {
+			return 0;
+		}
+		return this.gamepads[gamepad].axes[axis];
+	};
+	Gamepad.prototype.count = function() {
+		return this.gamepads.length;
+	}
+	Gamepad.prototype.button = function(gamepad, button) {
+		if (gamepad >= this.gamepads.length) {
+			return false;
+		}
+		return this.gamepads[gamepad].buttons[button];
+	};
+	Gamepad.prototype.name = function(gamepad) {
+		if (gamepad >= this.gamepads.length) {
+			return undefined;
+		}
+		return this.gamepads[gamepad].id;
+	};
+
+	module.exports = Gamepad;
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	module.exports = [
+		{
+			"id": "Logitech Gamepad F310",
+			"userAgent": "Firefox",
+			"buttons": [
+				{
+					"name": "a"
+				},
+				{
+					"name": "b"
+				},
+				{
+					"name": "x"
+				},
+				{
+					"name": "y"
+				},
+				{
+					"name": "left shoulder"
+				},
+				{
+					"name": "right shoulder"
+				},
+				{
+					"name": "back"
+				},
+				{
+					"name": "start"
+				},
+				{
+					"name": "home"
+				},
+				{
+					"name": "left stick"
+				},
+				{
+					"name": "right stick"
+				}
+			],
+			"axes": [
+				{
+					"name": "left stick x",
+					"buttons": [
+						"left stick left",
+						"left stick right"
+					]
+				},
+				{
+					"name": "left stick y",
+					"buttons": [
+						"left stick up",
+						"left stick down"
+					]
+				},
+				{
+					"name": "left trigger",
+					"scale": "to positive",
+					"buttons": [
+						null,
+						"left trigger"
+					]
+				},
+				{
+					"name": "right stick x",
+					"buttons": [
+						"right stick left",
+						"right stick right"
+					]
+				},
+				{
+					"name": "right stick y",
+					"buttons": [
+						"right stick up",
+						"right stick down"
+					]
+				},
+				{
+					"name": "right trigger",
+					"scale": "to positive",
+					"buttons": [
+						null,
+						"right trigger"
+					]
+				},
+				{
+					"name": "dpad x",
+					"buttons": [
+						"dpad left",
+						"dpad right"
+					]
+				},
+				{
+					"name": "dpad y",
+					"buttons": [
+						"dpad up",
+						"dpad down"
+					]
+				}
+			]
+		},
+		{
+			"id": "Logitech Gamepad F310",
+			"userAgent": "WebKit",
+			"buttons": [
+				{
+					"name": "a"
+				},
+				{
+					"name": "b"
+				},
+				{
+					"name": "x"
+				},
+				{
+					"name": "y"
+				},
+				{
+					"name": "left shoulder"
+				},
+				{
+					"name": "right shoulder"
+				},
+				{
+					"name": "left trigger",
+					"axis": "left trigger",
+					"axisValue": 1
+				},
+				{
+					"name": "right trigger",
+					"axis": "right trigger",
+					"axisValue": 1
+				},
+				{
+					"name": "back"
+				},
+				{
+					"name": "start"
+				},
+				{
+					"name": "left stick"
+				},
+				{
+					"name": "right stick"
+				},
+				{
+					"name": "dpad up",
+					"axis": "dpad y",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad down",
+					"axis": "dpad y",
+					"axisValue": 1
+				},
+				{
+					"name": "dpad left",
+					"axis": "dpad x",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad right",
+					"axis": "dpad x",
+					"axisValue": 1
+				},
+				{
+					"name": "home"
+				}
+			],
+			"axes": [
+				{
+					"name": "left stick x",
+					"buttons": [
+						"left stick left",
+						"left stick right"
+					]
+				},
+				{
+					"name": "left stick y",
+					"buttons": [
+						"left stick up",
+						"left stick down"
+					]
+				},
+				{
+					"name": "right stick x",
+					"buttons": [
+						"right stick left",
+						"right stick right"
+					]
+				},
+				{
+					"name": "right stick y",
+					"buttons": [
+						"right stick up",
+						"right stick down"
+					]
+				}
+			]
+		},
+		{
+			"id": "Sony Computer Entertainment Wireless Controller",
+			"userAgent": "Firefox",
+			"buttons": [
+				{
+					"name": "x"
+				},
+				{
+					"name": "a"
+				},
+				{
+					"name": "b"
+				},
+				{
+					"name": "y"
+				},
+				{
+					"name": "left shoulder"
+				},
+				{
+					"name": "right shoulder"
+				},
+				{
+					"name": "left trigger"
+				},
+				{
+					"name": "right trigger"
+				},
+				{
+					"name": "back"
+				},
+				{
+					"name": "start"
+				},
+				{
+					"name": "left stick"
+				},
+				{
+					"name": "right stick"
+				},
+				{
+					"name": "home"
+				},
+				{
+					"name": "touch"
+				}
+			],
+			"axes": [
+				{
+					"name": "left stick x",
+					"buttons": [
+						"left stick left",
+						"left stick right"
+					]
+				},
+				{
+					"name": "left stick y",
+					"buttons": [
+						"left stick up",
+						"left stick down"
+					]
+				},
+				{
+					"name": "right stick x",
+					"buttons": [
+						"right stick left",
+						"right stick right"
+					]
+				},
+				{
+					"name": "left trigger",
+					"scale": "to positive"
+				},
+				{
+					"name": "right trigger",
+					"scale": "to positive"
+				},
+				{
+					"name": "right stick y",
+					"buttons": [
+						"right stick up",
+						"right stick down"
+					]
+				},
+				{
+					"name": "dpad x",
+					"buttons": [
+						"dpad left",
+						"dpad right"
+					]
+				},
+				{
+					"name": "dpad y",
+					"buttons": [
+						"dpad up",
+						"dpad down"
+					]
+				}
+			]
+		},
+		{
+			"id": "Sony Computer Entertainment Wireless Controller",
+			"userAgent": "WebKit",
+			"buttons": [
+				{
+					"name": "a"
+				},
+				{
+					"name": "b"
+				},
+				{
+					"name": "x"
+				},
+				{
+					"name": "y"
+				},
+				{
+					"name": "left shoulder"
+				},
+				{
+					"name": "right shoulder"
+				},
+				{
+					"name": "left trigger",
+					"axis": "left trigger",
+					"axisValue": 1
+				},
+				{
+					"name": "right trigger",
+					"axis": "right trigger",
+					"axisValue": 1
+				},
+				{
+					"name": "back"
+				},
+				{
+					"name": "start"
+				},
+				{
+					"name": "left stick"
+				},
+				{
+					"name": "right stick"
+				},
+				{
+					"name": "dpad up",
+					"axis": "dpad y",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad down",
+					"axis": "dpad y",
+					"axisValue": 1
+				},
+				{
+					"name": "dpad left",
+					"axis": "dpad x",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad right",
+					"axis": "dpad x",
+					"axisValue": 1
+				},
+				{
+					"name": "home"
+				},
+				{
+					"name": "touch"
+				}
+			],
+			"axes": [
+				{
+					"name": "left stick x",
+					"buttons": [
+						"left stick left",
+						"left stick right"
+					]
+				},
+				{
+					"name": "left stick y",
+					"buttons": [
+						"left stick up",
+						"left stick down"
+					]
+				},
+				{
+					"name": "right stick x",
+					"buttons": [
+						"right stick left",
+						"right stick right"
+					]
+				},
+				{
+					"name": "right stick y",
+					"buttons": [
+						"right stick up",
+						"right stick down"
+					]
+				}
+			]
+		},
+		{
+			"id": "Sony PLAYSTATION(R)3 Controller",
+			"userAgent": "Firefox",
+			"buttons": [
+				{
+					"name": "back"
+				},
+				{
+					"name": "left stick"
+				},
+				{
+					"name": "right stick"
+				},
+				{
+					"name": "start"
+				},
+				{
+					"name": "dpad up",
+					"axis": "dpad y",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad right",
+					"axis": "dpad x",
+					"axisValue": 1
+				},
+				{
+					"name": "dpad down",
+					"axis": "dpad y",
+					"axisValue": 1
+				},
+				{
+					"name": "dpad left",
+					"axis": "dpad x",
+					"axisValue": -1
+				},
+				{
+					"name": "left trigger"
+				},
+				{
+					"name": "right trigger"
+				},
+				{
+					"name": "left shoulder"
+				},
+				{
+					"name": "right shoulder"
+				},
+				{
+					"name": "y"
+				},
+				{
+					"name": "b"
+				},
+				{
+					"name": "a"
+				},
+				{
+					"name": "x"
+				},
+				{
+					"name": "home"
+				}
+			],
+			"axes": [
+				{
+					"name": "left stick x",
+					"buttons": [
+						"left stick left",
+						"left stick right"
+					]
+				},
+				{
+					"name": "left stick y",
+					"buttons": [
+						"left stick up",
+						"left stick down"
+					]
+				},
+				{
+					"name": "right stick x",
+					"buttons": [
+						"right stick left",
+						"right stick right"
+					]
+				},
+				{
+					"name": "right stick y",
+					"buttons": [
+						"right stick up",
+						"right stick down"
+					]
+				},
+				{
+					"name": "dunno 1"
+				},
+				{
+					"name": "dunno 2"
+				},
+				{
+					"name": "dunno 3"
+				},
+				{
+					"name": "dunno 4"
+				},
+				{
+					"name": "dpad up",
+					"scale": "to positive"
+				},
+				{
+					"name": "dpad right",
+					"scale": "to positive"
+				},
+				{
+					"name": "dpad down",
+					"scale": "to positive"
+				},
+				{
+					"name": "dunno 8"
+				},
+				{
+					"name": "left trigger",
+					"scale": "to positive"
+				},
+				{
+					"name": "right trigger",
+					"scale": "to positive"
+				},
+				{
+					"name": "left shoulder",
+					"scale": "to positive"
+				},
+				{
+					"name": "right shoulder",
+					"scale": "to positive"
+				},
+				{
+					"name": "y",
+					"scale": "to positive"
+				},
+				{
+					"name": "b",
+					"scale": "to positive"
+				},
+				{
+					"name": "a",
+					"scale": "to positive"
+				},
+				{
+					"name": "x",
+					"scale": "to positive"
+				},
+				{
+					"name": "dunno 9"
+				},
+				{
+					"name": "dunno 10"
+				},
+				{
+					"name": "dunno 11"
+				},
+				{
+					"name": "accelerometer x"
+				},
+				{
+					"name": "accelerometer y"
+				},
+				{
+					"name": "accelerometer z"
+				}
+			]
+		},
+		{
+			"id": "Sony PLAYSTATION(R)3 Controller",
+			"userAgent": "WebKit",
+			"buttons": [
+				{
+					"name": "a"
+				},
+				{
+					"name": "b"
+				},
+				{
+					"name": "x"
+				},
+				{
+					"name": "y"
+				},
+				{
+					"name": "left shoulder"
+				},
+				{
+					"name": "right shoulder"
+				},
+				{
+					"name": "left trigger",
+					"axis": "left trigger",
+					"axisValue": 1
+				},
+				{
+					"name": "right trigger",
+					"axis": "right trigger",
+					"axisValue": 1
+				},
+				{
+					"name": "back"
+				},
+				{
+					"name": "start"
+				},
+				{
+					"name": "left stick"
+				},
+				{
+					"name": "right stick"
+				},
+				{
+					"name": "dpad up",
+					"axis": "dpad y",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad down",
+					"axis": "dpad y",
+					"axisValue": 1
+				},
+				{
+					"name": "dpad left",
+					"axis": "dpad x",
+					"axisValue": -1
+				},
+				{
+					"name": "dpad right",
+					"axis": "dpad x",
+					"axisValue": 1
+				},
+				{
+					"name": "home"
+				}
+			],
+			"axes": [
+				{
+					"name": "left stick x",
+					"buttons": [
+						"left stick left",
+						"left stick right"
+					]
+				},
+				{
+					"name": "left stick y",
+					"buttons": [
+						"left stick up",
+						"left stick down"
+					]
+				},
+				{
+					"name": "right stick x",
+					"buttons": [
+						"right stick left",
+						"right stick right"
+					]
+				},
+				{
+					"name": "right stick y",
+					"buttons": [
+						"right stick up",
+						"right stick down"
+					]
+				}
+			]
+		}
+	];
+
+/***/ },
+/* 12 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1146,7 +1950,7 @@
 
 
 /***/ },
-/* 11 */
+/* 13 */
 /***/ function(module, exports) {
 
 	/**
@@ -1259,7 +2063,7 @@
 
 
 /***/ },
-/* 12 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1310,11 +2114,10 @@
 	 * Mouse and touch input handling. An instance of Mouse is available as {@link Splat.Game#mouse}.
 	 *
 	 * The first touch will emulates a mouse press with button 0.
-	 * This means you can use the mouse ({@link Mouse#isPressed}/{@link Mouse#consumePressed}) APIs and your game will work on touch screens (as long as you only need the left button.
+	 * This means you can use the mouse ({@link Mouse#isPressed}) APIs and your game will work on touch screens (as long as you only need the left button).
 	 *
 	 * A mouse press will emulate a touch if the device does not support touch.
 	 * This means you can use {@link Mouse#touches}, and your game will still work on a PC with a mouse.
-	 * Also, if you call {@link Mouse#consumePressed} with button 0, it will add a `consumed:true` field to all current touches. This will help you prevent processing a touch multiple times.
 	 *
 	 * @constructor
 	 * @param {external:canvas} canvas The canvas to listen for events on.
@@ -1335,7 +2138,7 @@
 		 * @member {Array}
 		 * @private
 		 */
-		this.buttons = [0, 0, 0];
+		this.buttons = [true, true, true];
 
 		/**
 		 * An array of the current touches on a touch screen device. Each touch has a `x`, `y`, and `id` field.
@@ -1361,14 +2164,14 @@
 			var m = relMouseCoords(canvas, event);
 			self.x = m.x;
 			self.y = m.y;
-			self.buttons[event.button] = 2;
+			self.buttons[event.button] = true;
 			updateTouchFromMouse();
 		});
 		canvas.addEventListener("mouseup", function(event) {
 			var m = relMouseCoords(canvas, event);
 			self.x = m.x;
 			self.y = m.y;
-			self.buttons[event.button] = 0;
+			self.buttons[event.button] = false;
 			updateTouchFromMouse();
 			if (self.onmouseup) {
 				self.onmouseup(self.x, self.y);
@@ -1405,8 +2208,8 @@
 		function updateMouseFromTouch(touch) {
 			self.x = touch.x;
 			self.y = touch.y;
-			if (self.buttons[0] === 0) {
-				self.buttons[0] = 2;
+			if (self.buttons[0] === false) {
+				self.buttons[0] = true;
 			}
 		}
 		function touchIndexById(id) {
@@ -1474,57 +2277,24 @@
 	/**
 	 * Test if a mouse button is currently pressed.
 	 * @param {number} button The button number to test. Button 0 is typically the left mouse button, as well as the first touch location.
-	 * @param {number} [x] The left edge of a rectangle to restrict the test to. If the mouse position is outside of this rectangle, the button will not be considered pressed.
-	 * @param {number} [y] The top edge of a rectangle to restrict the test to. If the mouse position is outside of this rectangle, the button will not be considered pressed.
-	 * @param {number} [width] The width of a rectangle to restrict the test to. If the mouse position is outside of this rectangle, the button will not be considered pressed.
-	 * @param {number} [height] The height of a rectangle to restrict the test to. If the mouse position is outside of this rectangle, the button will not be considered pressed.
 	 * @returns {boolean}
 	 */
-	Mouse.prototype.isPressed = function(button, x, y, width, height) {
-		var b = this.buttons[button] >= 1;
-		if (arguments.length > 1 && (this.x < x || this.x > x + width || this.y < y || this.y > y + height)) {
-			b = false;
-		}
-		return b;
-	};
-	/**
-	 * Test if a mouse button is currently pressed, and was newly pressed down since the last call to consumePressed.
-	 * If you call this with button 0, it will add a `consumed:true` field to all current touches. This will help you prevent processing a touch multiple times.
-	 * @param {number} button The button number to test.
-	 * @param {number} [x] The left edge of a rectangle to restrict the test to. If the mouse position is outside of this rectangle, the button will not be considered pressed.
-	 * @param {number} [y] The top edge of a rectangle to restrict the test to. If the mouse position is outside of this rectangle, the button will not be considered pressed.
-	 * @param {number} [width] The width of a rectangle to restrict the test to. If the mouse position is outside of this rectangle, the button will not be considered pressed.
-	 * @param {number} [height] The height of a rectangle to restrict the test to. If the mouse position is outside of this rectangle, the button will not be considered pressed.
-	 * @returns {boolean}
-	 */
-	Mouse.prototype.consumePressed = function(button, x, y, width, height) {
-		var b = this.buttons[button] === 2;
-		if (arguments.length > 1 && (this.x < x || this.x > x + width || this.y < y || this.y > y + height)) {
-			b = false;
-		}
-		if (b) {
-			this.buttons[button] = 1;
-			if (button === 0) {
-				for (var i = 0; i < this.touches.length; i++) {
-					this.touches[i].consumed = true;
-				}
-			}
-		}
-		return b;
+	Mouse.prototype.isPressed = function(button) {
+		return this.buttons[button];
 	};
 
 	module.exports = Mouse;
 
 
 /***/ },
-/* 13 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var ECS = __webpack_require__(14).EntityComponentSystem;
-	var EntityPool = __webpack_require__(14).EntityPool;
-	var gameLoop = __webpack_require__(18);
+	var ECS = __webpack_require__(16).EntityComponentSystem;
+	var EntityPool = __webpack_require__(16).EntityPool;
+	var gameLoop = __webpack_require__(20);
 
 	function Scene() {
 		this.simulation = new ECS();
@@ -1561,24 +2331,24 @@
 
 
 /***/ },
-/* 14 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	module.exports = {
-		EntityComponentSystem: __webpack_require__(15),
-		EntityPool: __webpack_require__(17)
+		EntityComponentSystem: __webpack_require__(17),
+		EntityPool: __webpack_require__(19)
 	};
 
 
 /***/ },
-/* 15 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var present = __webpack_require__(16);
+	var present = __webpack_require__(18);
 
 	function EntityComponentSystem() {
 		this.systems = [];
@@ -1635,7 +2405,7 @@
 
 
 /***/ },
-/* 16 */
+/* 18 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {var performance = global.performance || {};
@@ -1670,7 +2440,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 17 */
+/* 19 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1840,16 +2610,16 @@
 
 
 /***/ },
-/* 18 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var timeAccumulator = __webpack_require__(19);
+	var timeAccumulator = __webpack_require__(21);
 
 	module.exports = function(entities, simulation, simulationStepTime, renderer, context) {
 		var run = timeAccumulator(simulationStepTime);
-		var timeDelta = __webpack_require__(20)();
+		var timeDelta = __webpack_require__(22)();
 		var running = true;
 
 		// run simulation the first time, because not enough time will have elapsed
@@ -1914,7 +2684,7 @@
 
 
 /***/ },
-/* 19 */
+/* 21 */
 /***/ function(module, exports) {
 
 	module.exports = function(rate) {
@@ -1930,7 +2700,7 @@
 
 
 /***/ },
-/* 20 */
+/* 22 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1950,7 +2720,7 @@
 
 
 /***/ },
-/* 21 */
+/* 23 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2273,7 +3043,7 @@
 
 
 /***/ },
-/* 22 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2369,7 +3139,7 @@
 
 
 /***/ },
-/* 23 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2451,12 +3221,12 @@
 
 
 /***/ },
-/* 24 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var Scene = __webpack_require__(13);
+	var Scene = __webpack_require__(15);
 
 	module.exports = function(canvas, percentLoaded, nextScene) {
 		var scene = new Scene();
@@ -2488,7 +3258,7 @@
 
 
 /***/ },
-/* 25 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2525,12 +3295,12 @@
 	var rand = new Splat.math.Random(123);
 	var val = rand.random();
 		 */
-		Random: __webpack_require__(26)
+		Random: __webpack_require__(28)
 	};
 
 
 /***/ },
-/* 26 */
+/* 28 */
 /***/ function(module, exports) {
 
 	/*
@@ -2741,7 +3511,7 @@
 
 
 /***/ },
-/* 27 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2765,7 +3535,7 @@
 
 
 /***/ },
-/* 28 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2888,7 +3658,7 @@
 
 
 /***/ },
-/* 29 */
+/* 31 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2982,7 +3752,7 @@
 
 
 /***/ },
-/* 30 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3113,7 +3883,7 @@
 
 
 /***/ },
-/* 31 */
+/* 33 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3130,7 +3900,7 @@
 
 
 /***/ },
-/* 32 */
+/* 34 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3141,7 +3911,7 @@
 
 
 /***/ },
-/* 33 */
+/* 35 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3152,7 +3922,7 @@
 
 
 /***/ },
-/* 34 */
+/* 36 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3173,7 +3943,7 @@
 
 
 /***/ },
-/* 35 */
+/* 37 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3197,7 +3967,7 @@
 
 
 /***/ },
-/* 36 */
+/* 38 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3208,7 +3978,7 @@
 
 
 /***/ },
-/* 37 */
+/* 39 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3219,7 +3989,7 @@
 
 
 /***/ },
-/* 38 */
+/* 40 */
 /***/ function(module, exports) {
 
 	/**
@@ -3234,7 +4004,7 @@
 
 
 /***/ },
-/* 39 */
+/* 41 */
 /***/ function(module, exports) {
 
 	/**
@@ -3247,7 +4017,7 @@
 
 
 /***/ },
-/* 40 */
+/* 42 */
 /***/ function(module, exports) {
 
 	/**
@@ -3267,7 +4037,7 @@
 
 
 /***/ },
-/* 41 */
+/* 43 */
 /***/ function(module, exports) {
 
 	/**
@@ -3280,38 +4050,37 @@
 
 
 /***/ },
-/* 42 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "index.html";
 
 /***/ },
-/* 43 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./advance-animations.js": 44,
-		"./advance-timers.js": 45,
-		"./apply-friction.js": 46,
-		"./apply-movement-2d.js": 47,
-		"./apply-velocity.js": 48,
-		"./box-collider.js": 49,
-		"./center-position.js": 64,
-		"./clear-screen.js": 65,
-		"./constrain-position.js": 66,
-		"./control-player.js": 67,
-		"./draw-frame-rate.js": 68,
-		"./draw-image.js": 69,
-		"./draw-rectangles.js": 70,
-		"./follow-parent.js": 71,
-		"./match-aspect-ratio.js": 72,
-		"./match-canvas-size.js": 73,
-		"./match-center-x.js": 74,
-		"./match-center-y.js": 75,
-		"./match-center.js": 76,
-		"./match-parent.js": 77,
-		"./viewport-move-to-camera.js": 78,
-		"./viewport-reset.js": 79
+		"./advance-animations.js": 46,
+		"./advance-timers.js": 47,
+		"./apply-friction.js": 48,
+		"./apply-movement-2d.js": 49,
+		"./apply-velocity.js": 50,
+		"./box-collider.js": 51,
+		"./center-position.js": 66,
+		"./clear-screen.js": 67,
+		"./constrain-position.js": 68,
+		"./control-player.js": 69,
+		"./draw-frame-rate.js": 70,
+		"./draw-image.js": 71,
+		"./draw-rectangles.js": 72,
+		"./follow-parent.js": 73,
+		"./match-aspect-ratio.js": 74,
+		"./match-canvas-size.js": 75,
+		"./match-center-x.js": 76,
+		"./match-center-y.js": 77,
+		"./match-parent.js": 78,
+		"./viewport-move-to-camera.js": 79,
+		"./viewport-reset.js": 80
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -3324,11 +4093,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 43;
+	webpackContext.id = 45;
 
 
 /***/ },
-/* 44 */
+/* 46 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3404,7 +4173,7 @@
 
 
 /***/ },
-/* 45 */
+/* 47 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3437,7 +4206,7 @@
 
 
 /***/ },
-/* 46 */
+/* 48 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3454,7 +4223,7 @@
 
 
 /***/ },
-/* 47 */
+/* 49 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3481,7 +4250,7 @@
 
 
 /***/ },
-/* 48 */
+/* 50 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3498,12 +4267,12 @@
 
 
 /***/ },
-/* 49 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var boxIntersect = __webpack_require__(50);
+	var boxIntersect = __webpack_require__(52);
 
 	module.exports = function(ecs, game) {
 
@@ -3557,16 +4326,16 @@
 
 
 /***/ },
-/* 50 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
 
 	module.exports = boxIntersectWrapper
 
-	var pool = __webpack_require__(51)
-	var sweep = __webpack_require__(58)
-	var boxIntersectIter = __webpack_require__(60)
+	var pool = __webpack_require__(53)
+	var sweep = __webpack_require__(60)
+	var boxIntersectIter = __webpack_require__(62)
 
 	function boxEmpty(d, box) {
 	  for(var j=0; j<d; ++j) {
@@ -3700,13 +4469,13 @@
 	}
 
 /***/ },
-/* 51 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, Buffer) {'use strict'
 
-	var bits = __webpack_require__(56)
-	var dup = __webpack_require__(57)
+	var bits = __webpack_require__(58)
+	var dup = __webpack_require__(59)
 
 	//Legacy pool support
 	if(!global.__TYPEDARRAY_POOL) {
@@ -3917,10 +4686,10 @@
 	    BUFFER[i].length = 0
 	  }
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(52).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(54).Buffer))
 
 /***/ },
-/* 52 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -3933,9 +4702,9 @@
 
 	'use strict'
 
-	var base64 = __webpack_require__(53)
-	var ieee754 = __webpack_require__(54)
-	var isArray = __webpack_require__(55)
+	var base64 = __webpack_require__(55)
+	var ieee754 = __webpack_require__(56)
+	var isArray = __webpack_require__(57)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -5472,10 +6241,10 @@
 	  return i
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 53 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -5605,7 +6374,7 @@
 
 
 /***/ },
-/* 54 */
+/* 56 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -5695,7 +6464,7 @@
 
 
 /***/ },
-/* 55 */
+/* 57 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -5706,7 +6475,7 @@
 
 
 /***/ },
-/* 56 */
+/* 58 */
 /***/ function(module, exports) {
 
 	/**
@@ -5916,7 +6685,7 @@
 
 
 /***/ },
-/* 57 */
+/* 59 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -5970,7 +6739,7 @@
 	module.exports = dupe
 
 /***/ },
-/* 58 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
@@ -5983,9 +6752,9 @@
 	  scanComplete:   scanComplete
 	}
 
-	var pool  = __webpack_require__(51)
-	var bits  = __webpack_require__(56)
-	var isort = __webpack_require__(59)
+	var pool  = __webpack_require__(53)
+	var bits  = __webpack_require__(58)
+	var isort = __webpack_require__(61)
 
 	//Flag for blue
 	var BLUE_FLAG = (1<<28)
@@ -6409,7 +7178,7 @@
 	}
 
 /***/ },
-/* 59 */
+/* 61 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6650,21 +7419,21 @@
 	}
 
 /***/ },
-/* 60 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
 
 	module.exports = boxIntersectIter
 
-	var pool = __webpack_require__(51)
-	var bits = __webpack_require__(56)
-	var bruteForce = __webpack_require__(61)
+	var pool = __webpack_require__(53)
+	var bits = __webpack_require__(58)
+	var bruteForce = __webpack_require__(63)
 	var bruteForcePartial = bruteForce.partial
 	var bruteForceFull = bruteForce.full
-	var sweep = __webpack_require__(58)
-	var findMedian = __webpack_require__(62)
-	var genPartition = __webpack_require__(63)
+	var sweep = __webpack_require__(60)
+	var findMedian = __webpack_require__(64)
+	var genPartition = __webpack_require__(65)
 
 	//Twiddle parameters
 	var BRUTE_FORCE_CUTOFF    = 128       //Cut off for brute force search
@@ -7149,7 +7918,7 @@
 	}
 
 /***/ },
-/* 61 */
+/* 63 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -7298,14 +8067,14 @@
 	exports.full    = bruteForcePlanner(true)
 
 /***/ },
-/* 62 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
 
 	module.exports = findMedian
 
-	var genPartition = __webpack_require__(63)
+	var genPartition = __webpack_require__(65)
 
 	var partitionStartLessThan = genPartition('lo<p0', ['p0'])
 
@@ -7445,7 +8214,7 @@
 	}
 
 /***/ },
-/* 63 */
+/* 65 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -7470,7 +8239,7 @@
 	}
 
 /***/ },
-/* 64 */
+/* 66 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7499,7 +8268,7 @@
 
 
 /***/ },
-/* 65 */
+/* 67 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7512,7 +8281,7 @@
 
 
 /***/ },
-/* 66 */
+/* 68 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7545,7 +8314,7 @@
 
 
 /***/ },
-/* 67 */
+/* 69 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7564,7 +8333,7 @@
 
 
 /***/ },
-/* 68 */
+/* 70 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7590,7 +8359,7 @@
 
 
 /***/ },
-/* 69 */
+/* 71 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7688,7 +8457,7 @@
 
 
 /***/ },
-/* 70 */
+/* 72 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7708,7 +8477,7 @@
 
 
 /***/ },
-/* 71 */
+/* 73 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7757,7 +8526,7 @@
 
 
 /***/ },
-/* 72 */
+/* 74 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7786,7 +8555,7 @@
 
 
 /***/ },
-/* 73 */
+/* 75 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7808,7 +8577,7 @@
 
 
 /***/ },
-/* 74 */
+/* 76 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7835,7 +8604,7 @@
 
 
 /***/ },
-/* 75 */
+/* 77 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7862,35 +8631,7 @@
 
 
 /***/ },
-/* 76 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	module.exports = function(ecs, game) {
-		game.entities.registerSearch("matchCenterSearch", ["matchCenter", "size", "position"]);
-		ecs.addEach(function matchCenter(entity) {
-			var position = game.entities.get(entity, "position");
-			var size = game.entities.get(entity, "size");
-
-			var match = game.entities.get(entity, "matchCenter").id;
-			var matchPosition = game.entities.get(match, "position");
-			if (matchPosition === undefined) {
-				return;
-			}
-			var matchSize = game.entities.get(match, "size");
-			if (matchSize === undefined) {
-				return;
-			}
-
-			position.x = matchPosition.x + (matchSize.width / 2) - (size.width / 2);
-			position.y = matchPosition.y + (matchSize.height / 2) - (size.height / 2);
-		}, "matchCenterSearch");
-	};
-
-
-/***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7914,7 +8655,7 @@
 
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7933,7 +8674,7 @@
 
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7946,13 +8687,14 @@
 
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./renderer/sample-renderer-system.js": 81,
-		"./simulation/sample-simulation-system.js": 83,
-		"./simulation/track-last-position.js": 84
+		"./renderer/sample-renderer-system.js": 82,
+		"./simulation/main-collisions.js": 84,
+		"./simulation/temp-system.js": 85,
+		"./simulation/track-last-position.js": 86
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -7965,11 +8707,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 80;
+	webpackContext.id = 81;
 
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7981,7 +8723,7 @@
 	 */
 
 	module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
-		var file = __webpack_require__(82);
+		var file = __webpack_require__(83);
 		var x, y, image, image_index, i, index;
 		game.entities.registerSearch("sampleRendererSystem", ["tilemap", "position", "size"]);
 		ecs.addEach(function(entity, context) { // eslint-disable-line no-unused-vars
@@ -7998,7 +8740,7 @@
 
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8006,106 +8748,106 @@
 		"layers": [
 			{
 				"data": [
-					4,
-					4,
-					5,
-					3,
-					4,
-					4,
-					4,
-					2,
-					2,
-					2,
-					2,
-					4,
-					4,
-					5,
-					3,
-					3,
-					5,
-					2,
-					3,
-					2,
-					5,
-					5,
-					10,
-					10,
-					10,
-					10,
-					3,
-					5,
-					2,
-					5,
-					5,
-					4,
-					2,
-					2,
-					10,
-					5,
-					3,
-					3,
-					3,
-					3,
-					2,
-					4,
-					3,
-					5,
-					10,
-					3,
-					5,
-					4,
-					3,
-					3,
-					2,
-					4,
-					3,
-					5,
-					10,
-					3,
-					2,
-					5,
-					3,
-					5,
-					4,
+					1,
+					1,
 					6,
-					4,
-					3,
-					2,
-					3,
-					2,
-					12,
-					12,
-					4,
+					1,
+					1,
+					1,
+					1,
+					17,
 					5,
-					3,
-					2,
-					3,
-					2,
-					2,
-					2,
+					18,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
 					4,
-					4,
-					3,
-					4,
-					4,
-					3,
-					4,
-					3,
-					4,
-					4,
+					18,
+					1,
+					6,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
 					5,
-					3,
+					18,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
+					4,
+					18,
+					1,
+					1,
+					1,
+					1,
+					1,
+					6,
+					1,
+					17,
+					4,
+					18,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
 					5,
-					3,
-					3,
-					4,
+					18,
+					6,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
 					5,
+					18,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
 					4,
-					4,
-					4,
+					18,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					17,
 					5,
-					2,
-					2
+					18,
+					1,
+					1,
+					6,
+					1,
+					1,
+					1,
+					1,
+					17,
+					4,
+					18
 				],
 				"height": 10,
 				"name": "Background",
@@ -8154,40 +8896,40 @@
 					0,
 					0,
 					0,
+					19,
+					20,
+					21,
+					22,
 					0,
 					0,
 					0,
 					0,
 					0,
 					0,
+					23,
+					24,
+					25,
+					26,
 					0,
 					0,
 					0,
 					0,
 					0,
 					0,
+					27,
+					28,
+					29,
+					30,
 					0,
 					0,
 					0,
 					0,
 					0,
 					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					11,
-					11,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
+					31,
+					32,
+					33,
+					34,
 					0,
 					0,
 					0,
@@ -8239,42 +8981,6 @@
 				"name": "Objects",
 				"objects": [
 					{
-						"height": 59,
-						"name": "",
-						"properties": {
-							"Collidable": "True"
-						},
-						"type": "",
-						"visible": true,
-						"width": 119,
-						"x": 452,
-						"y": 386
-					},
-					{
-						"height": 192,
-						"name": "",
-						"properties": {
-							"Collidable": "True"
-						},
-						"type": "",
-						"visible": true,
-						"width": 64,
-						"x": 256,
-						"y": 192
-					},
-					{
-						"height": 64,
-						"name": "",
-						"properties": {
-							"Collidable": "True"
-						},
-						"type": "",
-						"visible": true,
-						"width": 256,
-						"x": 128,
-						"y": 128
-					},
-					{
 						"height": 64,
 						"name": "",
 						"properties": {
@@ -8283,8 +8989,20 @@
 						"type": "",
 						"visible": true,
 						"width": 64,
-						"x": 64,
-						"y": 384
+						"x": 512,
+						"y": 576
+					},
+					{
+						"height": 55,
+						"name": "",
+						"properties": {
+							"Collidable": "True"
+						},
+						"type": "",
+						"visible": true,
+						"width": 120,
+						"x": 257,
+						"y": 395
 					}
 				],
 				"opacity": 1,
@@ -8301,11 +9019,23 @@
 		"tilesets": [
 			{
 				"firstgid": 1,
-				"image": "ground_tiles.png",
-				"imageheight": 128,
+				"image": "grass-tiles-2-small.png",
+				"imageheight": 192,
 				"imagewidth": 384,
 				"margin": 0,
-				"name": "ground_tiles",
+				"name": "grass-tiles-2-small",
+				"properties": {},
+				"spacing": 0,
+				"tileheight": 64,
+				"tilewidth": 64
+			},
+			{
+				"firstgid": 19,
+				"image": "tree2-final.png",
+				"imageheight": 256,
+				"imagewidth": 256,
+				"margin": 0,
+				"name": "tree2-final",
 				"properties": {},
 				"spacing": 0,
 				"tileheight": 64,
@@ -8318,7 +9048,7 @@
 	};
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8335,37 +9065,57 @@
 	function wasBelow(entityLastPosition, otherPosition, otherSize) {
 		return entityLastPosition.y >= otherPosition.y + otherSize.height;
 	}
+	function getRandomInt(min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
 
 	module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
-		game.entities.registerSearch("resolveCollisions", ["collisions","velocity","lastPosition","position"]);
 		ecs.addEach(function(entity, elapsed) { // eslint-disable-line no-unused-vars
 			var entityCollisions = game.entities.get(entity, "collisions");
 			var entityPosition = game.entities.get(entity, "position");
 			var entitySize = game.entities.get(entity, "size");
 			var entityVelocity = game.entities.get(entity, "velocity");
 			var entityLastPosition = game.entities.get(entity, "lastPosition");
+			var timers = game.entities.get(entity, "timers");
 
 			for (var i = 0; i < entityCollisions.length; i++) {
 				var other = entityCollisions[i];
+				var tiledProperties = game.entities.get(other, "tiledProperties");
 				var otherPosition = game.entities.get(other, "position");
 				var otherSize = game.entities.get(other, "size");
 
-				if (wasLeft(entityLastPosition, entitySize, otherPosition)) {
-					entityPosition.x = otherPosition.x - entitySize.width;
-					entityVelocity.x = 0;
+				if (typeof tiledProperties !== undefined) {
+
+					if (tiledProperties.Collidable) {
+						if (wasLeft(entityLastPosition, entitySize, otherPosition)) {
+							entityPosition.x = otherPosition.x - entitySize.width;
+							entityVelocity.x = 0;
+						}
+						if (wasRight(entityLastPosition, otherPosition, otherSize)) {
+							entityPosition.x = otherPosition.x + otherSize.width;
+							entityVelocity.x = 0;
+						}
+						if (wasAbove(entityLastPosition, entitySize, otherPosition)) {
+							entityPosition.y = otherPosition.y - entitySize.height;
+							entityVelocity.y = 0;
+						}
+						if (wasBelow(entityLastPosition, otherPosition, otherSize)) {
+							entityPosition.y = otherPosition.y + otherSize.height;
+							entityVelocity.y = 0;
+						}
+					} else if (tiledProperties.SpawnBug) {
+						var spawnChance = tiledProperties.SpawnChance;
+						var chance = getRandomInt(0, 999);
+						if (chance < spawnChance && !timers.spawn_delay.running) {
+							var args = {
+								"player_pos": entityPosition
+							};
+							game.switchScene("battle", args);
+						}
+					}
+
 				}
-				if (wasRight(entityLastPosition, otherPosition, otherSize)) {
-					entityPosition.x = otherPosition.x + otherSize.width;
-					entityVelocity.x = 0;
-				}
-				if (wasAbove(entityLastPosition, entitySize, otherPosition)) {
-					entityPosition.y = otherPosition.y - entitySize.height;
-					entityVelocity.y = 0;
-				}
-				if (wasBelow(entityLastPosition, otherPosition, otherSize)) {
-					entityPosition.y = otherPosition.y + otherSize.height;
-					entityVelocity.y = 0;
-				}
+
 			}
 		}, "player");
 
@@ -8373,26 +9123,50 @@
 
 
 /***/ },
-/* 84 */
+/* 85 */
+/***/ function(module, exports) {
+
+	"use script";
+
+	module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
+		ecs.addEach(function(entity, elapsed) { // eslint-disable-line no-unused-vars
+			var entity_pos = game.entities.get(entity, "position");
+			var entity_size = game.entities.get(entity, "size");
+			if (game.inputs.buttonPressed("action")) {
+				if (game.inputs.mouse.x > entity_pos.x 
+					&& game.inputs.mouse.x < entity_pos.x + entity_size.width
+					&& game.inputs.mouse.y > entity_pos.y 
+					&& game.inputs.mouse.y < entity_pos.y + entity_size.height) {
+					game.switchScene("main", game.arguments);
+				}
+			}
+		}, "return");
+	};
+
+
+/***/ },
+/* 86 */
 /***/ function(module, exports) {
 
 	"use strict";
 
-	module.exports = function(ecs, data) { // eslint-disable-line no-unused-vars
+	module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
 		ecs.addEach(function trackLastPosition(entity, elapsed) { // eslint-disable-line no-unused-vars
-			var position = data.entities.get(entity, "position");
-			data.entities.set(entity, "lastPosition", { x: position.x, y: position.y });
+			var position = game.entities.get(entity, "position");
+			game.entities.set(entity, "lastPosition", { x: position.x, y: position.y });
 		}, "position");
 	};
 
 
 /***/ },
-/* 85 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./main-enter.js": 86,
-		"./main-exit.js": 87
+		"./battle-enter.js": 88,
+		"./battle-exit.js": 89,
+		"./main-enter.js": 90,
+		"./main-exit.js": 93
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -8405,36 +9179,675 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 85;
+	webpackContext.id = 87;
 
 
 /***/ },
-/* 86 */
+/* 88 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function(game) { // eslint-disable-line no-unused-vars
+	};
+
+
+/***/ },
+/* 89 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function(game) { // eslint-disable-line no-unused-vars
+	};
+
+
+/***/ },
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	/**
-	 * Tilesets
-	 * What I know:
-	 *		imagewidth
-	 *		imageheight
-	 *		tilewidth
-	 *		tileheight
-	 * cols = imagewidth / tilewidth;
-	 * rows = imageheight / tileheight;
-	 * var x = (i % cols) * tilewidth;
-	 * var y = Math.floor(i/rows) * tileheight;
+	module.exports = function(game) { // eslint-disable-line no-unused-vars
+		var file = __webpack_require__(91);
+		var importer = __webpack_require__(92);
+		importer(file, game.entities);
+		var player = 1;
+
+		var spawn_pos;
+		var spawn = game.entities.find("spawn");
+		if (game.arguments.player_pos) {
+			spawn_pos = game.arguments.player_pos;	
+		} else if (spawn.length > 0) {
+			spawn_pos = game.entities.get(spawn, "position");
+		} else {
+			spawn_pos = { "x": 0, "y": 0 };
+		}
+		game.entities.set(player, "position", spawn_pos);
+		var container = game.entities.find("container");
+		game.entities.set(player, "constrainPosition", { "id": container });
+	};
+
+
+/***/ },
+/* 91 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"height": 18,
+		"layers": [
+			{
+				"data": [
+					13,
+					2,
+					1,
+					2,
+					1,
+					2,
+					1,
+					2,
+					1,
+					1,
+					13,
+					13,
+					2,
+					13,
+					1,
+					14,
+					1,
+					14,
+					1,
+					2,
+					2,
+					13,
+					13,
+					14,
+					13,
+					2,
+					1,
+					13,
+					1,
+					14,
+					2,
+					13,
+					13,
+					1,
+					13,
+					13,
+					2,
+					2,
+					14,
+					13,
+					13,
+					1,
+					2,
+					2,
+					1,
+					1,
+					2,
+					1,
+					13,
+					14,
+					1,
+					13,
+					13,
+					1,
+					13,
+					13,
+					2,
+					13,
+					2,
+					14,
+					2,
+					1,
+					14,
+					13,
+					13,
+					14,
+					1,
+					14,
+					2,
+					14,
+					13,
+					2,
+					1,
+					2,
+					14,
+					2,
+					2,
+					14,
+					1,
+					14,
+					13,
+					1,
+					13,
+					1,
+					2,
+					2,
+					13,
+					14,
+					13,
+					2,
+					1,
+					14,
+					14,
+					14,
+					2,
+					14,
+					37,
+					37,
+					37,
+					38,
+					37,
+					37,
+					37,
+					38,
+					38,
+					38,
+					38,
+					38,
+					19,
+					9,
+					10,
+					20,
+					20,
+					21,
+					20,
+					19,
+					7,
+					22,
+					10,
+					22,
+					8,
+					19,
+					10,
+					19,
+					22,
+					21,
+					21,
+					10,
+					9,
+					10,
+					9,
+					22,
+					26,
+					26,
+					26,
+					25,
+					25,
+					26,
+					6,
+					10,
+					5,
+					25,
+					26,
+					26,
+					1,
+					14,
+					2,
+					14,
+					14,
+					1,
+					40,
+					10,
+					39,
+					14,
+					13,
+					2,
+					1,
+					14,
+					2,
+					2,
+					2,
+					14,
+					28,
+					7,
+					59,
+					14,
+					2,
+					1,
+					1,
+					2,
+					2,
+					1,
+					14,
+					14,
+					40,
+					21,
+					39,
+					1,
+					14,
+					14,
+					13,
+					13,
+					13,
+					1,
+					14,
+					1,
+					70,
+					21,
+					27,
+					2,
+					1,
+					2,
+					2,
+					13,
+					13,
+					2,
+					14,
+					1,
+					58,
+					21,
+					71,
+					2,
+					2,
+					1,
+					13,
+					1,
+					1,
+					14,
+					14,
+					13,
+					58,
+					19,
+					71,
+					14,
+					14,
+					1
+				],
+				"height": 18,
+				"name": "Background",
+				"opacity": 1,
+				"properties": {
+					"Background": "True"
+				},
+				"type": "tilelayer",
+				"visible": true,
+				"width": 12,
+				"x": 0,
+				"y": 0
+			},
+			{
+				"data": [
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					75,
+					76,
+					77,
+					78,
+					79,
+					80,
+					81,
+					82,
+					83,
+					0,
+					0,
+					0,
+					0,
+					84,
+					85,
+					86,
+					87,
+					88,
+					89,
+					90,
+					91,
+					0,
+					0,
+					0,
+					0,
+					92,
+					93,
+					94,
+					95,
+					96,
+					97,
+					98,
+					99,
+					0,
+					0,
+					0,
+					0,
+					100,
+					101,
+					102,
+					103,
+					104,
+					105,
+					106,
+					107,
+					0,
+					0,
+					0,
+					0,
+					108,
+					109,
+					110,
+					111,
+					112,
+					113,
+					114,
+					115,
+					0,
+					0,
+					0,
+					0,
+					116,
+					117,
+					118,
+					119,
+					120,
+					121,
+					122,
+					123,
+					0,
+					0,
+					0,
+					0,
+					124,
+					125,
+					126,
+					127,
+					128,
+					129,
+					130,
+					131,
+					0,
+					0,
+					0,
+					0,
+					132,
+					133,
+					134,
+					135,
+					136,
+					137,
+					138,
+					139,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					74,
+					73,
+					74,
+					74,
+					73,
+					74,
+					0,
+					0,
+					0,
+					0,
+					75,
+					0,
+					74,
+					74,
+					74,
+					73,
+					74,
+					74,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				"height": 18,
+				"name": "Foreground",
+				"opacity": 1,
+				"properties": {
+					"Background": "False"
+				},
+				"type": "tilelayer",
+				"visible": true,
+				"width": 12,
+				"x": 0,
+				"y": 0
+			},
+			{
+				"height": 18,
+				"name": "Objects",
+				"objects": [
+					{
+						"height": 43,
+						"name": "",
+						"properties": {
+							"Collidable": "True"
+						},
+						"type": "",
+						"visible": true,
+						"width": 108,
+						"x": 136,
+						"y": 236
+					},
+					{
+						"height": 34,
+						"name": "",
+						"properties": {
+							"Spawn": "True"
+						},
+						"type": "",
+						"visible": true,
+						"width": 32,
+						"x": 223,
+						"y": 536
+					},
+					{
+						"height": 64,
+						"name": "",
+						"properties": {
+							"Collidable": "False",
+							"SpawnBug": "True",
+							"SpawnChance": "4"
+						},
+						"type": "",
+						"visible": true,
+						"width": 192,
+						"x": 0,
+						"y": 512
+					}
+				],
+				"opacity": 1,
+				"properties": {
+					"Background": "False"
+				},
+				"type": "objectgroup",
+				"visible": true,
+				"width": 12,
+				"x": 0,
+				"y": 0
+			}
+		],
+		"orientation": "orthogonal",
+		"properties": {},
+		"tileheight": 32,
+		"tilesets": [
+			{
+				"firstgid": 1,
+				"image": "grass-tiles-2-small.png",
+				"imageheight": 192,
+				"imagewidth": 384,
+				"margin": 0,
+				"name": "grass-tiles-2-small",
+				"properties": {},
+				"spacing": 0,
+				"tileheight": 32,
+				"tilewidth": 32
+			},
+			{
+				"firstgid": 73,
+				"image": "qubodup-bush_berries_0.png",
+				"imageheight": 32,
+				"imagewidth": 32,
+				"margin": 0,
+				"name": "qubodup-bush_berries_0",
+				"properties": {},
+				"spacing": 0,
+				"tileheight": 32,
+				"tilewidth": 32
+			},
+			{
+				"firstgid": 74,
+				"image": "qubodup-bush_0.png",
+				"imageheight": 32,
+				"imagewidth": 32,
+				"margin": 0,
+				"name": "qubodup-bush_0",
+				"properties": {},
+				"spacing": 0,
+				"tileheight": 32,
+				"tilewidth": 32
+			},
+			{
+				"firstgid": 75,
+				"image": "littleshrooms_0.png",
+				"imageheight": 40,
+				"imagewidth": 32,
+				"margin": 0,
+				"name": "littleshrooms_0",
+				"properties": {},
+				"spacing": 0,
+				"tileheight": 32,
+				"tilewidth": 32
+			},
+			{
+				"firstgid": 76,
+				"image": "tree2-final.png",
+				"imageheight": 256,
+				"imagewidth": 256,
+				"margin": 0,
+				"name": "tree2-final",
+				"properties": {},
+				"spacing": 0,
+				"tileheight": 32,
+				"tilewidth": 32
+			}
+		],
+		"tilewidth": 32,
+		"version": 1,
+		"width": 12
+	};
+
+/***/ },
+/* 92 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	/** <p>Import an orthogonal tilemap from
+	 * <a href="http://www.mapeditor.org/" target="_blank">Tiled: Map Editor</a> and draw on the screen.</p>
+	 * <h5>To Do</h5>
+	 * <ul>
+	 * <li><b>Image Layer</b></li>
+	 * <li><b>Ellipse and Polygon Objects</b></li>
+	 * </ul>
+	 * @module Import From Tiled
 	 */
 
-	module.exports = function(game) { // eslint-disable-line no-unused-vars
-		var file = __webpack_require__(82);
+	/** @function ImportTilemap
+	 * @param {Object} file JSON file exported from Tiled. This should be required in a scene enter
+	 * script and passed to the function.
+	 * @param {EntityPool} entities EntityPool from game.entities
+	 */
+	function ImportTilemap(file, entities) { // eslint-disable-line no-unused-vars
 
-		// Tile layer variables
-		var tile, image, image_index, tile_pos;
-		var collider, layer, object;
-		var cols = file.tilesets[0].imagewidth / file.tilesets[0].tilewidth;
-		
+		var tile, image, image_index, tile_pos, cols, tileset, tileset_index = 0;
+		var layer, object, entity, object_properties = {};
+
 		for (var i = 0; i < file.layers.length; i++) {
 			layer = file.layers[i];
 
@@ -8442,69 +9855,115 @@
 			if (layer.type == "tilelayer") {
 				for (j = 0; j < layer.data.length; j++) {
 
-					// Tiled gives 1-based indexes. Subtract one for position math
-					image_index = layer.data[j] - 1;
+					// Select tileset index based on firstgid and image index
+					// Set image index minus firstgid for positioning math
+					for (var k = 0; k < file.tilesets.length; k++) {
+						if (layer.data[j] >= file.tilesets[k].firstgid) {
+							tileset_index = k;
+						}
+					}
+					cols = file.tilesets[tileset_index].imagewidth / file.tilesets[tileset_index].tilewidth;
+					image_index = layer.data[j] - file.tilesets[tileset_index].firstgid;
+					tileset = file.tilesets[tileset_index];
+
 					if (image_index >= 0) {
 
 						// Create tile and get properties
-						tile = game.instantiatePrefab("tile");
-						image = game.entities.get(tile, "image");
-						tile_pos = game.entities.get(tile, "position");
+						tile = entities.create();
+						entities.set(tile, "name", "tile");
+						entities.set(tile, "tile", true);
+						entities.set(tile, "image", { "name": "" });
+						entities.set(tile, "position", { "x": 0, "y": 0 });
+						image = entities.get(tile, "image");
+						tile_pos = entities.get(tile, "position");
 
 						// Position based on index
 						tile_pos.x = (j % file.width) * file.tilewidth;
-						tile_pos.y = Math.floor(j / file.height) * file.tileheight;
+						tile_pos.y = Math.floor(j / file.width) * file.tileheight;
 
 						// Character position z: 1 so anything without background true will layer over player
 						tile_pos.z = (layer.properties.Background == "True") ? -1 : 2;
 
 						// Select which "tile" of the tileset image to render
-						image.name = file.tilesets[0].image;
-						image.sourceWidth = file.tilesets[0].tilewidth;
-						image.sourceHeight = file.tilesets[0].tileheight;
-						image.destinationWidth = file.tilesets[0].tilewidth;
-						image.destinationHeight = file.tilesets[0].tileheight;
-						image.sourceX = (image_index % cols) * file.tilesets[0].tilewidth;
-						image.sourceY = Math.floor(image_index / cols) * file.tilesets[0].tileheight;
-						
+						image.name = tileset.image;
+						image.sourceWidth = tileset.tilewidth;
+						image.sourceHeight = tileset.tileheight;
+						image.destinationWidth = tileset.tilewidth;
+						image.destinationHeight = tileset.tileheight;
+						image.sourceX = (image_index % cols) * tileset.tilewidth + ((image_index % cols) * tileset.spacing) + tileset.margin;
+						if(tileset.tileheight == tileset.imageheight) {
+							image.sourceY = 0;
+						} else {
+							image.sourceY = Math.floor(image_index / cols) * tileset.tileheight + (Math.floor(image_index / cols) * tileset.spacing) + tileset.margin;
+						}
+
 					}
 				}
 			}
 
+			/**
+			 * @member {Entity} Object Entities
+			 * <p>Create Entity with size and position components</p>
+			 * <p><b>Collidable</b>: True or False <br />Add collision component to entity.
+			 * Currently collisions are handled as a simulation system in the project.</p>
+			 * <p><b>Spawn</b>: True or False <br />Creates an entity with a "spawn" boolean
+			 * component allowing you to use <code>game.entities.find("spawn");</code> to find the spawn point for this map.</p>
+			 * <br />All other properties end up in a "tiledProperties" component to be handled on a per-game basis.
+			 */
 			// Loop object layer for collisions and spawn point
-			// TODO Bug spawn chance triggers, doors, switches (buttons), warp zones, NPC Spawn points
 			if (layer.type == "objectgroup") {
 				for (var j = 0; j < layer.objects.length; j++) {
 					object = layer.objects[j];
-
-					// Collision box prefabs
-					if (object.properties.Collidable == "True") {
-						collider = game.instantiatePrefab("collision");
-						game.entities.set(collider, "size", { "width": object.width, "height": object.height });
-						game.entities.set(collider, "position", { "x": object.x, "y": object.y });
-					}
+					object_properties = {};
+					entity = entities.create();
+					entities.set(entity, "size", { "width": object.width, "height": object.height });
+					entities.set(entity, "position", { "x": object.x, "y": object.y });
+					entities.set(entity, "collisions", []);
+					Object.keys(object.properties).forEach(function(key) {
+						if (!isNaN(object.properties[key])) {
+							object_properties[key] = parseInt(object.properties[key], 10);
+						}
+						if (new String(object.properties[key]).toLowerCase() == "true" || object.properties[key] == "1") {
+							object_properties[key] = true;
+						}
+						if (new String(object.properties[key]).toLowerCase() == "false" || object.properties[key] == "0") {
+							object_properties[key] = false;
+						}
+					});
 
 					// Spawn points
-					if (object.properties.Spawn == "True") {
-						game.entities.set(player, "position", { "x": object.x, "y": object.y });
+					if (object.properties.Spawn) {
+						entities.set(entity, "spawn", true);
 					}
+
+					entities.set(entity, "tiledProperties", object_properties);
+
 				}
 			}
 		}
 
-		// Define map bounding box for contrain position
-		var player = 1, container = 2;
+		/**
+		 * @member {Entity} Container Entity
+		 * Created automatically allowing you to use
+		 * <code>game.entities.find("container");</code> to get a constrainPosition ID</p>
+		 */
 		var map_size = {
 			"width": file.width * file.tilewidth,
 			"height": file.height * file.tileheight
 		};
-		game.entities.set(container, "size", map_size);
-		game.entities.set(player, "constrainPosition", { "id": container });
-	};
+		var container = entities.create();
+		entities.set(container, "name", "container");
+		entities.set(container, "container", true);
+		entities.set(container, "position", { "x": 0, "y": 0 });
+		entities.set(container, "size", map_size);
+
+	}
+
+	module.exports = ImportTilemap;
 
 
 /***/ },
-/* 87 */
+/* 93 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8514,22 +9973,27 @@
 
 
 /***/ },
-/* 88 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./character.png": 89,
-		"./grass1.png": 90,
-		"./grass2.png": 91,
-		"./grass3.png": 92,
-		"./grass4.png": 93,
-		"./ground_tiles.png": 94,
-		"./hole.png": 95,
-		"./logo.png": 96,
-		"./stone1.png": 97,
-		"./stone2.png": 98,
-		"./tree.png": 99,
-		"./tree2.png": 100
+		"./character.png": 95,
+		"./grass-tiles-2-small.png": 96,
+		"./grass1.png": 97,
+		"./grass2.png": 98,
+		"./grass3.png": 99,
+		"./grass4.png": 100,
+		"./ground_tiles.png": 101,
+		"./hole.png": 102,
+		"./littleshrooms_0.png": 103,
+		"./logo.png": 104,
+		"./qubodup-bush_0.png": 105,
+		"./qubodup-bush_berries_0.png": 106,
+		"./stone1.png": 107,
+		"./stone2.png": 108,
+		"./tree.png": 109,
+		"./tree2-final.png": 110,
+		"./tree2.png": 111
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -8542,83 +10006,113 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 88;
+	webpackContext.id = 94;
 
-
-/***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/character.png";
-
-/***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/grass1.png";
-
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/grass2.png";
-
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/grass3.png";
-
-/***/ },
-/* 93 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/grass4.png";
-
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/ground_tiles.png";
 
 /***/ },
 /* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/hole.png";
+	module.exports = __webpack_require__.p + "images/character.png";
 
 /***/ },
 /* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/logo.png";
+	module.exports = __webpack_require__.p + "images/grass-tiles-2-small.png";
 
 /***/ },
 /* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/stone1.png";
+	module.exports = __webpack_require__.p + "images/grass1.png";
 
 /***/ },
 /* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/stone2.png";
+	module.exports = __webpack_require__.p + "images/grass2.png";
 
 /***/ },
 /* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tree.png";
+	module.exports = __webpack_require__.p + "images/grass3.png";
 
 /***/ },
 /* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tree2.png";
+	module.exports = __webpack_require__.p + "images/grass4.png";
 
 /***/ },
 /* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/ground_tiles.png";
+
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/hole.png";
+
+/***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/littleshrooms_0.png";
+
+/***/ },
+/* 104 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/logo.png";
+
+/***/ },
+/* 105 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/qubodup-bush_0.png";
+
+/***/ },
+/* 106 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/qubodup-bush_berries_0.png";
+
+/***/ },
+/* 107 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/stone1.png";
+
+/***/ },
+/* 108 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/stone2.png";
+
+/***/ },
+/* 109 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/tree.png";
+
+/***/ },
+/* 110 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/tree2-final.png";
+
+/***/ },
+/* 111 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/tree2.png";
+
+/***/ },
+/* 112 */
 /***/ function(module, exports) {
 
 	function webpackContext(req) {
@@ -8627,21 +10121,22 @@
 	webpackContext.keys = function() { return []; };
 	webpackContext.resolve = webpackContext;
 	module.exports = webpackContext;
-	webpackContext.id = 101;
+	webpackContext.id = 112;
 
 
 /***/ },
-/* 102 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./animations.json": 103,
-		"./entities.json": 104,
-		"./inputs.json": 105,
-		"./prefabs.json": 106,
-		"./scenes.json": 107,
-		"./systems.json": 108,
-		"./tilemap.json": 82
+		"./animations.json": 114,
+		"./entities.json": 115,
+		"./inputs.json": 116,
+		"./prefabs.json": 117,
+		"./scenes.json": 118,
+		"./systems.json": 119,
+		"./tilemap.json": 83,
+		"./tilemap2.json": 91
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -8654,17 +10149,17 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 102;
+	webpackContext.id = 113;
 
 
 /***/ },
-/* 103 */
+/* 114 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 /***/ },
-/* 104 */
+/* 115 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8687,6 +10182,13 @@
 				"id": 1,
 				"name": "player",
 				"player": true,
+				"timers": {
+					"spawn_delay": {
+						"running": true,
+						"time": 0,
+						"max": 1500
+					}
+				},
 				"image": {
 					"name": "character.png"
 				},
@@ -8695,9 +10197,13 @@
 					"y": 0,
 					"z": 1
 				},
+				"lastPosition": {
+					"x": 0,
+					"y": 0
+				},
 				"size": {
-					"width": 64,
-					"height": 64
+					"width": 32,
+					"height": 32
 				},
 				"velocity": {
 					"x": 0,
@@ -8724,84 +10230,125 @@
 					"x": 0.97,
 					"y": 0.97
 				}
-			},
+			}
+		],
+		"battle": [
 			{
-				"id": 2,
-				"container": true,
+				"id": 0,
+				"camera": true,
 				"position": {
 					"x": 0,
-					"y": 0,
-					"z": -1
+					"y": 0
+				},
+				"matchCanvasSize": true,
+				"strokeStyle": "red"
+			},
+			{
+				"id": 1,
+				"return": true,
+				"position": {
+					"x": 100,
+					"y": 100
 				},
 				"size": {
-					"width": 0,
-					"height": 0
-				}
+					"width": 150,
+					"height": 75
+				},
+				"strokeStyle": "red"
 			}
 		]
 	};
 
 /***/ },
-/* 105 */
+/* 116 */
 /***/ function(module, exports) {
 
 	module.exports = {
-		"up": {
-			"type": "button",
-			"inputs": [
+		"axes": {},
+		"buttons": {
+			"up": [
 				{
 					"device": "keyboard",
-					"key": "w"
+					"button": "w"
 				},
 				{
 					"device": "keyboard",
-					"key": "up"
+					"button": "up"
+				},
+				{
+					"device": "gamepad",
+					"button": "dpad up"
+				},
+				{
+					"device": "gamepad",
+					"button": "left stick up"
 				}
-			]
-		},
-		"down": {
-			"type": "button",
-			"inputs": [
+			],
+			"down": [
 				{
 					"device": "keyboard",
-					"key": "s"
+					"button": "s"
 				},
 				{
 					"device": "keyboard",
-					"key": "down"
+					"button": "down"
+				},
+				{
+					"device": "gamepad",
+					"button": "dpad down"
+				},
+				{
+					"device": "gamepad",
+					"button": "left stick down"
 				}
-			]
-		},
-		"left": {
-			"type": "button",
-			"inputs": [
+			],
+			"left": [
 				{
 					"device": "keyboard",
-					"key": "a"
+					"button": "a"
 				},
 				{
 					"device": "keyboard",
-					"key": "left"
+					"button": "left"
+				},
+				{
+					"device": "gamepad",
+					"button": "dpad left"
+				},
+				{
+					"device": "gamepad",
+					"button": "left stick left"
 				}
-			]
-		},
-		"right": {
-			"type": "button",
-			"inputs": [
+			],
+			"right": [
 				{
 					"device": "keyboard",
-					"key": "d"
+					"button": "d"
 				},
 				{
 					"device": "keyboard",
-					"key": "right"
+					"button": "right"
+				},
+				{
+					"device": "gamepad",
+					"button": "dpad right"
+				},
+				{
+					"device": "gamepad",
+					"button": "left stick right"
+				}
+			],
+			"action": [
+				{
+					"device": "mouse",
+					"button": 0
 				}
 			]
 		}
 	};
 
 /***/ },
-/* 106 */
+/* 117 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8837,7 +10384,7 @@
 	};
 
 /***/ },
-/* 107 */
+/* 118 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8845,11 +10392,15 @@
 			"first": true,
 			"onEnter": "./scripts/main-enter",
 			"onExit": "./scripts/main-exit"
+		},
+		"battle": {
+			"onEnter": "./scripts/battle-enter",
+			"onExit": "./scripts/battle-exit"
 		}
 	};
 
 /***/ },
-/* 108 */
+/* 119 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -8857,65 +10408,75 @@
 			{
 				"name": "splat-ecs/lib/systems/match-canvas-size",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			},
 			{
 				"name": "splat-ecs/lib/systems/advance-timers",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			},
 			{
 				"name": "splat-ecs/lib/systems/advance-animations",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			},
 			{
 				"name": "splat-ecs/lib/systems/control-player",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			},
 			{
 				"name": "splat-ecs/lib/systems/apply-movement-2d",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			},
 			{
 				"name": "splat-ecs/lib/systems/apply-velocity",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			},
 			{
 				"name": "splat-ecs/lib/systems/apply-friction",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			},
 			{
 				"name": "splat-ecs/lib/systems/constrain-position",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			},
 			{
 				"name": "splat-ecs/lib/systems/follow-parent",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			},
 			{
 				"name": "splat-ecs/lib/systems/box-collider",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			},
 			{
-				"name": "./systems/simulation/sample-simulation-system",
+				"name": "./systems/simulation/main-collisions",
 				"scenes": [
 					"main"
 				]
@@ -8925,37 +10486,54 @@
 				"scenes": [
 					"main"
 				]
+			},
+			{
+				"name": "./systems/simulation/temp-system",
+				"scenes": [
+					"battle"
+				]
 			}
 		],
 		"renderer": [
 			{
 				"name": "splat-ecs/lib/systems/clear-screen",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			},
 			{
 				"name": "splat-ecs/lib/systems/viewport-move-to-camera",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			},
 			{
 				"name": "splat-ecs/lib/systems/draw-image",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
+				]
+			},
+			{
+				"name": "splat-ecs/lib/systems/draw-rectangles",
+				"scenes": [
+					"battle"
 				]
 			},
 			{
 				"name": "splat-ecs/lib/systems/viewport-reset",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			},
 			{
 				"name": "splat-ecs/lib/systems/draw-frame-rate",
 				"scenes": [
-					"main"
+					"main",
+					"battle"
 				]
 			}
 		]
