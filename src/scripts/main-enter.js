@@ -16,6 +16,9 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 		spawn_pos = { "x": 0, "y": 0 };
 	}
 	game.entities.set(player, "position", spawn_pos);
+	var tile = game.entities.find("tile")[0];
+	var tile_size = game.entities.get(tile, "size");
+	game.entities.set(player, "tile_size", tile_size);
 	var container = game.entities.find("container");
 	game.entities.set(player, "constrainPosition", { "id": container });
 };

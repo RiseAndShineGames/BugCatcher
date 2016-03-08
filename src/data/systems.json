@@ -77,6 +77,12 @@
 		"scenes": [
 			"battle"
 			]
+	},
+	{
+		"name": "./systems/simulation/move-tile",
+		"scenes": [
+			"main"
+			]
 	}
 	],
 		"renderer": [
