@@ -23,11 +23,22 @@
 				"running": true,
 				"time": 0,
 				"max": 1500
+			},
+			"move": {
+				"running": false,
+				"time": 0,
+				"max": 250,
+				"script": "./scripts/move_player"
 			}
+		},
+		"tile_size": {
+			"width": 0,
+			"height": 0
 		},
 		"image": {
 			"name": "character.png"
 		},
+		"moving": false,
 		"position": {
 			"x": 0,
 			"y": 0,
@@ -41,31 +52,7 @@
 			"width": 32,
 			"height": 32
 		},
-		"velocity": {
-			"x": 0,
-			"y": 0
-		},
-		"playerController2d": {
-			"up": "up",
-			"down": "down",
-			"left": "left",
-			"right": "right"
-		},
-		"movement2d": {
-			"upMax": -0.25,
-			"downMax": 0.25,
-			"leftMax": -0.25,
-			"rightMax": 0.25,
-			"upAccel": -0.01,
-			"downAccel": 0.01,
-			"leftAccel": -0.01,
-			"rightAccel": 0.01
-		},
-		"collisions": [],
-		"friction": {
-			"x": 0.97,
-			"y": 0.97
-		}
+		"collisions": []
 	}
 	],
 	"battle": [
