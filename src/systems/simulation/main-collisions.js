@@ -52,7 +52,7 @@ module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
 					}
 				} else if (tiledProperties.SpawnBug) {
 					var spawnChance = tiledProperties.SpawnChance;
-					var chance = getRandomInt(0, 999);
+					var chance = getRandomInt(0, 9999);
 					if (chance < spawnChance && !timers.spawn_delay.running) {
 						var args = {
 							"player_pos": entityPosition
