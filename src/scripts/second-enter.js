@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = function(game) { // eslint-disable-line no-unused-vars
-	var file = require("../data/tilemap2.json");
+	var file = require("../data/secondscene.json");
 	var importer = require("splat-ecs/lib/import-from-tiled.js");
 	importer(file, game.entities);
 	var player = 1;
@@ -17,7 +17,7 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 			}
 		}
 	} else if (spawn.length > 0) {
-		spawn_pos = game.entities.get(spawn[0], "position");
+		spawn_pos = game.entities.get(spawn, "position");
 	} else {
 		spawn_pos = { "x": 0, "y": 0 };
 	}

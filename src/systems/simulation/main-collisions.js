@@ -17,6 +17,7 @@ function getRandomInt(min, max) {
 }
 
 module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
+	var args;
 	ecs.addEach(function(entity, elapsed) { // eslint-disable-line no-unused-vars
 		var entityCollisions = game.entities.get(entity, "collisions");
 		var entityPosition = game.entities.get(entity, "position");
@@ -30,6 +31,7 @@ module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
 			var tiledProperties = game.entities.get(other, "tiledProperties");
 			var otherPosition = game.entities.get(other, "position");
 			var otherSize = game.entities.get(other, "size");
+			var otherType = game.entities.get(other, "type");
 
 			if (typeof tiledProperties !== undefined) {
 
@@ -54,10 +56,17 @@ module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
 					var spawnChance = tiledProperties.SpawnChance;
 					var chance = getRandomInt(0, 999);
 					if (chance < spawnChance && !timers.spawn_delay.running) {
-						var args = {
+						args = {
 							"player_pos": entityPosition
 						};
 						game.switchScene("battle", args);
+					}
+				} else if (otherType == "Exit") {
+					if (typeof tiledProperties.SceneName !== "undefined") {
+						args = {
+							"spawnID": tiledProperties.SpawnID
+						};
+						game.switchScene(tiledProperties.SceneName, args);
 					}
 				}
 
