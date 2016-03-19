@@ -72,14 +72,14 @@
 		}, {});
 	}
 
-	var imageContext = __webpack_require__(96);
+	var imageContext = __webpack_require__(99);
 	var imageManifest = generateManifest(imageContext.keys(), "images");
 
-	var soundContext = __webpack_require__(114);
+	var soundContext = __webpack_require__(117);
 	var soundManifest = generateManifest(soundContext.keys(), "sounds");
 
 	var localDataPath = "./data";
-	var localDataRequire = __webpack_require__(115);
+	var localDataRequire = __webpack_require__(118);
 
 	function customRequire(path) {
 		if (path.indexOf(splatSystemPath) === 0) {
@@ -9071,6 +9071,7 @@
 	}
 
 	module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
+		var args;
 		ecs.addEach(function(entity, elapsed) { // eslint-disable-line no-unused-vars
 			var entityCollisions = game.entities.get(entity, "collisions");
 			var entityPosition = game.entities.get(entity, "position");
@@ -9084,6 +9085,7 @@
 				var tiledProperties = game.entities.get(other, "tiledProperties");
 				var otherPosition = game.entities.get(other, "position");
 				var otherSize = game.entities.get(other, "size");
+				var otherType = game.entities.get(other, "type");
 
 				if (typeof tiledProperties !== undefined) {
 
@@ -9108,10 +9110,17 @@
 						var spawnChance = tiledProperties.SpawnChance;
 						var chance = getRandomInt(0, 999);
 						if (chance < spawnChance && !timers.spawn_delay.running) {
-							var args = {
+							args = {
 								"player_pos": entityPosition
 							};
 							game.switchScene("battle", args);
+						}
+					} else if (otherType == "Exit") {
+						if (typeof tiledProperties.SceneName !== "undefined") {
+							args = {
+								"spawnID": tiledProperties.SpawnID
+							};
+							game.switchScene(tiledProperties.SceneName, args);
 						}
 					}
 
@@ -9200,7 +9209,9 @@
 		"./battle-exit.js": 90,
 		"./main-enter.js": 91,
 		"./main-exit.js": 94,
-		"./move_player.js": 95
+		"./move_player.js": 95,
+		"./second-enter.js": 96,
+		"./second-exit.js": 98
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -9252,8 +9263,14 @@
 		var spawn = game.entities.find("spawn");
 		if (game.arguments.player_pos) {
 			spawn_pos = game.arguments.player_pos;	
+		} else if (game.arguments.spawnID) {
+			for (var i = 0; i < spawn.length; i++) {
+				if (game.entities.get(spawn[i], "tiledProperties").ID == game.arguments.spawnID) {
+					spawn_pos = game.entities.get(spawn[i], "position");
+				}
+			}
 		} else if (spawn.length > 0) {
-			spawn_pos = game.entities.get(spawn, "position");
+			spawn_pos = game.entities.get(spawn[0], "position");
 		} else {
 			spawn_pos = { "x": 0, "y": 0 };
 		}
@@ -9519,7 +9536,314 @@
 					0,
 					0,
 					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
 					75,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					75,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					75,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					127,
+					128,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					134,
+					135,
+					136,
+					137,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					75,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					75,
+					0,
+					0,
+					75,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					75,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					74,
+					74,
+					74,
+					74,
+					74,
+					73,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					74,
+					73,
+					74,
+					73,
+					74,
+					74,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				"height": 18,
+				"name": "Behind Character",
+				"opacity": 1,
+				"type": "tilelayer",
+				"visible": true,
+				"width": 12,
+				"x": 0,
+				"y": 0
+			},
+			{
+				"height": 18,
+				"name": "Objects",
+				"objects": [
+					{
+						"height": 43,
+						"name": "",
+						"properties": {
+							"Collidable": "True"
+						},
+						"type": "",
+						"visible": true,
+						"width": 108,
+						"x": 136,
+						"y": 236
+					},
+					{
+						"height": 34,
+						"name": "",
+						"properties": {
+							"ID": "0"
+						},
+						"type": "Spawn",
+						"visible": true,
+						"width": 32,
+						"x": 223,
+						"y": 536
+					},
+					{
+						"height": 64,
+						"name": "",
+						"properties": {
+							"Collidable": "False",
+							"SpawnBug": "True",
+							"SpawnChance": "4"
+						},
+						"type": "",
+						"visible": true,
+						"width": 192,
+						"x": 0,
+						"y": 512
+					},
+					{
+						"height": 64,
+						"name": "",
+						"properties": {
+							"Collidable": "False",
+							"SceneName": "second",
+							"SpawnID": "0"
+						},
+						"type": "Exit",
+						"visible": true,
+						"width": 8,
+						"x": 0,
+						"y": 288
+					},
+					{
+						"height": 34,
+						"name": "",
+						"properties": {
+							"ID": "1"
+						},
+						"type": "Spawn",
+						"visible": true,
+						"width": 32,
+						"x": 12,
+						"y": 289
+					}
+				],
+				"opacity": 1,
+				"properties": {
+					"Background": "False"
+				},
+				"type": "objectgroup",
+				"visible": true,
+				"width": 12,
+				"x": 0,
+				"y": 0
+			},
+			{
+				"data": [
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
 					76,
 					77,
 					78,
@@ -9595,8 +9919,8 @@
 					124,
 					125,
 					126,
-					127,
-					128,
+					0,
+					0,
 					129,
 					130,
 					131,
@@ -9606,10 +9930,10 @@
 					0,
 					132,
 					133,
-					134,
-					135,
-					136,
-					137,
+					0,
+					0,
+					0,
+					0,
 					138,
 					139,
 					0,
@@ -9698,24 +10022,24 @@
 					0,
 					0,
 					0,
-					74,
-					73,
-					74,
-					74,
-					73,
-					74,
 					0,
 					0,
 					0,
 					0,
-					75,
 					0,
-					74,
-					74,
-					74,
-					73,
-					74,
-					74,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
 					0,
 					0,
 					0,
@@ -9730,59 +10054,6 @@
 					"Background": "False"
 				},
 				"type": "tilelayer",
-				"visible": true,
-				"width": 12,
-				"x": 0,
-				"y": 0
-			},
-			{
-				"height": 18,
-				"name": "Objects",
-				"objects": [
-					{
-						"height": 43,
-						"name": "",
-						"properties": {
-							"Collidable": "True"
-						},
-						"type": "",
-						"visible": true,
-						"width": 108,
-						"x": 136,
-						"y": 236
-					},
-					{
-						"height": 34,
-						"name": "",
-						"properties": {
-							"Spawn": "True"
-						},
-						"type": "",
-						"visible": true,
-						"width": 32,
-						"x": 223,
-						"y": 536
-					},
-					{
-						"height": 64,
-						"name": "",
-						"properties": {
-							"Collidable": "False",
-							"SpawnBug": "True",
-							"SpawnChance": "4"
-						},
-						"type": "",
-						"visible": true,
-						"width": 192,
-						"x": 0,
-						"y": 512
-					}
-				],
-				"opacity": 1,
-				"properties": {
-					"Background": "False"
-				},
-				"type": "objectgroup",
 				"visible": true,
 				"width": 12,
 				"x": 0,
@@ -9875,129 +10146,152 @@
 	 * @module Import From Tiled
 	 */
 
-	/** @function ImportTilemap
+	/** @function importTilemap
 	 * @param {Object} file JSON file exported from Tiled. This should be required in a scene enter
 	 * script and passed to the function.
 	 * @param {EntityPool} entities EntityPool from game.entities
 	 */
-	function ImportTilemap(file, entities) { // eslint-disable-line no-unused-vars
+	function importTilemap(file, entities) { // eslint-disable-line no-unused-vars
 
-		var tile, image, image_index, tile_pos, cols, tileset, tileset_index = 0;
-		var layer, object, entity, object_properties = {};
+		var layer = {};
 
 		for (var i = 0; i < file.layers.length; i++) {
 			layer = file.layers[i];
-
-			// Render Tile Layers
 			if (layer.type == "tilelayer") {
-				for (j = 0; j < layer.data.length; j++) {
-
-					// Select tileset index based on firstgid and image index
-					// Set image index minus firstgid for positioning math
-					for (var k = 0; k < file.tilesets.length; k++) {
-						if (layer.data[j] >= file.tilesets[k].firstgid) {
-							tileset_index = k;
-						}
-					}
-					cols = file.tilesets[tileset_index].imagewidth / file.tilesets[tileset_index].tilewidth;
-					image_index = layer.data[j] - file.tilesets[tileset_index].firstgid;
-					tileset = file.tilesets[tileset_index];
-
-					if (image_index >= 0) {
-
-						// Create tile and get properties
-						tile = entities.create();
-						entities.set(tile, "name", "tile");
-						entities.set(tile, "tile", true);
-						entities.set(tile, "image", { "name": "" });
-						entities.set(tile, "position", { "x": 0, "y": 0 });
-						entities.set(tile, "size", { "width": tileset.tileheight, "height": tileset.tilewidth });
-						image = entities.get(tile, "image");
-						tile_pos = entities.get(tile, "position");
-
-						// Position based on index
-						tile_pos.x = (j % file.width) * file.tilewidth;
-						tile_pos.y = Math.floor(j / file.width) * file.tileheight;
-
-						// Character position z: 1 so anything without background true will layer over player
-						tile_pos.z = (layer.properties.Background == "True") ? -1 : 2;
-
-						// Select which "tile" of the tileset image to render
-						image.name = tileset.image;
-						image.sourceWidth = tileset.tilewidth;
-						image.sourceHeight = tileset.tileheight;
-						image.destinationWidth = tileset.tilewidth;
-						image.destinationHeight = tileset.tileheight;
-						image.sourceX = (image_index % cols) * tileset.tilewidth + ((image_index % cols) * tileset.spacing) + tileset.margin;
-						if(tileset.tileheight == tileset.imageheight) {
-							image.sourceY = 0;
-						} else {
-							image.sourceY = Math.floor(image_index / cols) * tileset.tileheight + (Math.floor(image_index / cols) * tileset.spacing) + tileset.margin;
-						}
-
-					}
-				}
-			}
-
-			/**
-			 * @member {Entity} Object Entities
-			 * <p>Create Entity with size and position components</p>
-			 * <p><b>Collidable</b>: True or False <br />Add collision component to entity.
-			 * Currently collisions are handled as a simulation system in the project.</p>
-			 * <p><b>Spawn</b>: True or False <br />Creates an entity with a "spawn" boolean
-			 * component allowing you to use <code>game.entities.find("spawn");</code> to find the spawn point for this map.</p>
-			 * <br />All other properties end up in a "tiledProperties" component to be handled on a per-game basis.
-			 */
-			// Loop object layer for collisions and spawn point
-			if (layer.type == "objectgroup") {
-				for (var j = 0; j < layer.objects.length; j++) {
-					object = layer.objects[j];
-					object_properties = {};
-					entity = entities.create();
-					entities.set(entity, "size", { "width": object.width, "height": object.height });
-					entities.set(entity, "position", { "x": object.x, "y": object.y });
-					entities.set(entity, "collisions", []);
-					Object.keys(object.properties).forEach(function(key) {
-						if (!isNaN(object.properties[key])) {
-							object_properties[key] = parseInt(object.properties[key], 10);
-						}
-						if (new String(object.properties[key]).toLowerCase() == "true" || object.properties[key] == "1") {
-							object_properties[key] = true;
-						}
-						if (new String(object.properties[key]).toLowerCase() == "false" || object.properties[key] == "0") {
-							object_properties[key] = false;
-						}
-					});
-
-					// Spawn points
-					if (object.properties.Spawn) {
-						entities.set(entity, "spawn", true);
-					}
-
-					entities.set(entity, "tiledProperties", object_properties);
-
-				}
+				processTiles(file, layer, i, entities);
+			} else if (layer.type == "objectgroup") {
+				processObjects(file, layer, i, entities);
 			}
 		}
 
-		/**
-		 * @member {Entity} Container Entity
+		/** @member {Entity} Container Entity
 		 * Created automatically allowing you to use
 		 * <code>game.entities.find("container");</code> to get a constrainPosition ID</p>
 		 */
-		var map_size = {
-			"width": file.width * file.tilewidth,
-			"height": file.height * file.tileheight
-		};
 		var container = entities.create();
 		entities.set(container, "name", "container");
 		entities.set(container, "container", true);
 		entities.set(container, "position", { "x": 0, "y": 0 });
-		entities.set(container, "size", map_size);
+		entities.set(container, "size", { "width": file.width * file.tilewidth, "height": file.height * file.tileheight });
 
 	}
 
-	module.exports = ImportTilemap;
+	function processTiles(file, layer, z_pos, entities) {
+		// Render Tile Layers
+		for (var j = 0; j < layer.data.length; j++) {
+			processTile(file, layer.data[j], j, z_pos, entities);
+		}
+	}
+
+	function processObjects(file, layer, z_pos, entities) {
+		// Loop object layer for collisions and spawn point
+		for (var j = 0; j < layer.objects.length; j++) {
+			processObject(file, layer.objects[j], z_pos, entities);
+		}
+	}
+
+	function getTileset(file, current) {
+		// Select tileset index based on firstgid and image index
+		// Set image index minus firstgid for positioning math
+		var tileset = {"index": 0};
+		for (var k = 0; k < file.tilesets.length; k++) {
+			if (current >= file.tilesets[k].firstgid) {
+				tileset.index = k;
+			}
+		}
+		tileset.data = file.tilesets[tileset.index];
+		tileset.imageIndex = current - file.tilesets[tileset.index].firstgid;
+		tileset.cols = tileset.data.imagewidth / tileset.data.tilewidth;
+		return tileset;
+	}
+
+	function processTile(file, current, index, z_pos, entities) {
+		
+		var tileset = getTileset(file, current);
+
+		if (tileset !== false && tileset.imageIndex >= 0) {
+
+			// Create tile and get properties
+			var tile = entities.create();
+			entities.set(tile, "name", "tile");
+			entities.set(tile, "tile", true);
+			entities.set(tile, "size", { "width": tileset.data.tileheight, "height": tileset.data.tilewidth });
+
+			// Position based on index
+			// Character position z: 1 so anything without background true will layer over player
+			var tilePos = {
+				"x": (index % file.width) * file.tilewidth,
+				"y": Math.floor(index / file.width) * file.tileheight,
+				"z": z_pos
+			};
+			entities.set(tile, "position", tilePos);
+
+			// Select which "tile" of the tileset image to render
+			entities.set(tile, "image", createImage(tileset.data, tileset.imageIndex, tileset.cols));
+
+		}
+	}
+
+	function createImage(tileset, imageIndex, cols) {
+		var image = {};
+		image.name = tileset.image;
+		image.sourceWidth = tileset.tilewidth;
+		image.sourceHeight = tileset.tileheight;
+		image.destinationWidth = tileset.tilewidth;
+		image.destinationHeight = tileset.tileheight;
+		image.sourceX = (imageIndex % cols) * tileset.tilewidth + ((imageIndex % cols) * tileset.spacing) + tileset.margin;
+		if(tileset.tileheight == tileset.imageheight) {
+			image.sourceY = 0;
+		} else {
+			image.sourceY = Math.floor(imageIndex / cols) * tileset.tileheight + (Math.floor(imageIndex / cols) * tileset.spacing) + tileset.margin;
+		}
+		return image;
+	}
+
+	/**
+	 * @member {Entity} Object Entities
+	 * <p>Create Entity with size and position components</p>
+	 * <p><b>Collidable</b>: True or False <br />Add collision component to entity.
+	 * Currently collisions are handled as a simulation system in the project.</p>
+	 * <p><b>Spawn</b>: True or False <br />Creates an entity with a "spawn" boolean
+	 * component allowing you to use <code>game.entities.find("spawn");</code> to find the spawn point for this map.</p>
+	 * <br />All other properties end up in a "tiledProperties" component to be handled on a per-game basis.
+	 */
+	function processObject(file, object, z_pos, entities) {
+		var tiledProperties = {};
+		var entity = entities.create();
+		entities.set(entity, "size", { "width": object.width, "height": object.height });
+		entities.set(entity, "position", { "x": object.x, "y": object.y, "z": z_pos });
+		entities.set(entity, "collisions", []);
+		entities.set(entity, "type", object.type);
+		entities.set(entity, "name", object.name);
+		Object.keys(object.properties).forEach(function(key) {
+			if (!isNaN(object.properties[key])) {
+				tiledProperties[key] = parseInt(object.properties[key], 10);
+			} else if (new String(object.properties[key]).toLowerCase() == "true") {
+				tiledProperties[key] = true;
+			} else if (new String(object.properties[key]).toLowerCase() == "false") {
+				tiledProperties[key] = false;
+			} else {
+				tiledProperties[key] = object.properties[key];
+			}
+		});
+
+		if (typeof object.gid !== "undefined") {
+			var tileset = getTileset(file, object.gid);
+			entities.set(entity, "image", createImage(tileset.data, tileset.imageIndex, tileset.cols));
+		}
+
+		// Spawn points
+		if (object.type == "Spawn") {
+			entities.set(entity, "spawn", true);
+		}
+
+		entities.set(entity, "tiledProperties", tiledProperties);
+
+	}
+
+	module.exports = importTilemap;
 
 
 /***/ },
@@ -10025,24 +10319,366 @@
 /* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	module.exports = function(game) { // eslint-disable-line no-unused-vars
+		var file = __webpack_require__(97);
+		var importer = __webpack_require__(93);
+		importer(file, game.entities);
+		var player = 1;
+
+		var spawn_pos;
+		var spawn = game.entities.find("spawn");
+		if (game.arguments.player_pos) {
+			spawn_pos = game.arguments.player_pos;	
+		} else if (game.arguments.spawnID) {
+			for (var i = 0; i < spawn.length; i++) {
+				if (game.entities.get(spawn[i], "tiledProperties").ID == game.arguments.spawnID) {
+					spawn_pos = game.entities.get(spawn[i], "position");
+				}
+			}
+		} else if (spawn.length > 0) {
+			spawn_pos = game.entities.get(spawn, "position");
+		} else {
+			spawn_pos = { "x": 0, "y": 0 };
+		}
+		game.entities.set(player, "position", spawn_pos);
+		var tile = game.entities.find("tile")[0];
+		var tile_size = game.entities.get(tile, "size");
+		game.entities.set(player, "tile_size", tile_size);
+		var container = game.entities.find("container");
+		game.entities.set(player, "constrainPosition", { "id": container });
+	};
+
+
+/***/ },
+/* 97 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"height": 18,
+		"layers": [
+			{
+				"data": [
+					2,
+					13,
+					2,
+					13,
+					1,
+					1,
+					1,
+					1,
+					1,
+					2,
+					13,
+					13,
+					14,
+					2,
+					2,
+					14,
+					2,
+					13,
+					13,
+					2,
+					1,
+					1,
+					1,
+					14,
+					14,
+					14,
+					2,
+					14,
+					1,
+					14,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					2,
+					14,
+					2,
+					1,
+					1,
+					2,
+					1,
+					13,
+					2,
+					2,
+					13,
+					1,
+					13,
+					14,
+					1,
+					1,
+					2,
+					2,
+					13,
+					13,
+					1,
+					13,
+					13,
+					1,
+					2,
+					14,
+					13,
+					2,
+					1,
+					2,
+					2,
+					1,
+					1,
+					13,
+					14,
+					2,
+					13,
+					14,
+					1,
+					14,
+					13,
+					2,
+					14,
+					1,
+					13,
+					1,
+					14,
+					13,
+					1,
+					14,
+					14,
+					14,
+					13,
+					13,
+					2,
+					13,
+					13,
+					13,
+					2,
+					38,
+					38,
+					38,
+					37,
+					38,
+					38,
+					38,
+					37,
+					37,
+					38,
+					38,
+					38,
+					10,
+					7,
+					8,
+					20,
+					19,
+					20,
+					8,
+					19,
+					19,
+					21,
+					19,
+					22,
+					20,
+					10,
+					9,
+					10,
+					21,
+					9,
+					10,
+					9,
+					10,
+					10,
+					20,
+					21,
+					26,
+					26,
+					25,
+					26,
+					25,
+					25,
+					25,
+					25,
+					26,
+					25,
+					25,
+					25,
+					1,
+					14,
+					14,
+					2,
+					14,
+					13,
+					1,
+					13,
+					1,
+					1,
+					13,
+					1,
+					1,
+					14,
+					14,
+					14,
+					14,
+					2,
+					1,
+					1,
+					13,
+					2,
+					14,
+					14,
+					14,
+					13,
+					13,
+					2,
+					14,
+					13,
+					1,
+					1,
+					1,
+					2,
+					14,
+					2,
+					14,
+					2,
+					2,
+					13,
+					14,
+					13,
+					14,
+					13,
+					1,
+					1,
+					13,
+					13,
+					14,
+					1,
+					2,
+					14,
+					13,
+					2,
+					13,
+					2,
+					13,
+					1,
+					2,
+					13,
+					13,
+					13,
+					14,
+					13,
+					14,
+					13,
+					14,
+					2,
+					13,
+					14,
+					14,
+					14
+				],
+				"height": 18,
+				"name": "Background",
+				"opacity": 1,
+				"type": "tilelayer",
+				"visible": true,
+				"width": 12,
+				"x": 0,
+				"y": 0
+			},
+			{
+				"height": 18,
+				"name": "Objects",
+				"objects": [
+					{
+						"height": 35,
+						"name": "",
+						"properties": {
+							"ID": "1"
+						},
+						"type": "Spawn",
+						"visible": true,
+						"width": 34,
+						"x": 333,
+						"y": 284
+					},
+					{
+						"height": 71,
+						"name": "",
+						"properties": {
+							"Collidable": "False",
+							"SceneName": "main",
+							"SpawnID": "1"
+						},
+						"type": "Exit",
+						"visible": true,
+						"width": 8,
+						"x": 373,
+						"y": 283
+					}
+				],
+				"opacity": 1,
+				"type": "objectgroup",
+				"visible": true,
+				"width": 12,
+				"x": 0,
+				"y": 0
+			}
+		],
+		"orientation": "orthogonal",
+		"properties": {},
+		"tileheight": 32,
+		"tilesets": [
+			{
+				"firstgid": 1,
+				"image": "grass-tiles-2-small.png",
+				"imageheight": 192,
+				"imagewidth": 384,
+				"margin": 0,
+				"name": "grass-tiles-2-small",
+				"properties": {},
+				"spacing": 0,
+				"tileheight": 32,
+				"tilewidth": 32
+			}
+		],
+		"tilewidth": 32,
+		"version": 1,
+		"width": 12
+	};
+
+/***/ },
+/* 98 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function(game) { // eslint-disable-line no-unused-vars
+	};
+
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var map = {
-		"./character.png": 97,
-		"./grass-tiles-2-small.png": 98,
-		"./grass1.png": 99,
-		"./grass2.png": 100,
-		"./grass3.png": 101,
-		"./grass4.png": 102,
-		"./ground_tiles.png": 103,
-		"./hole.png": 104,
-		"./littleshrooms_0.png": 105,
-		"./logo.png": 106,
-		"./qubodup-bush_0.png": 107,
-		"./qubodup-bush_berries_0.png": 108,
-		"./stone1.png": 109,
-		"./stone2.png": 110,
-		"./tree.png": 111,
-		"./tree2-final.png": 112,
-		"./tree2.png": 113
+		"./character.png": 100,
+		"./grass-tiles-2-small.png": 101,
+		"./grass1.png": 102,
+		"./grass2.png": 103,
+		"./grass3.png": 104,
+		"./grass4.png": 105,
+		"./ground_tiles.png": 106,
+		"./hole.png": 107,
+		"./littleshrooms_0.png": 108,
+		"./logo.png": 109,
+		"./qubodup-bush_0.png": 110,
+		"./qubodup-bush_berries_0.png": 111,
+		"./stone1.png": 112,
+		"./stone2.png": 113,
+		"./tree.png": 114,
+		"./tree2-final.png": 115,
+		"./tree2.png": 116
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -10055,113 +10691,113 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 96;
+	webpackContext.id = 99;
 
-
-/***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/character.png";
-
-/***/ },
-/* 98 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/grass-tiles-2-small.png";
-
-/***/ },
-/* 99 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__.p + "images/grass1.png";
 
 /***/ },
 /* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/grass2.png";
+	module.exports = __webpack_require__.p + "images/character.png";
 
 /***/ },
 /* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/grass3.png";
+	module.exports = __webpack_require__.p + "images/grass-tiles-2-small.png";
 
 /***/ },
 /* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/grass4.png";
+	module.exports = __webpack_require__.p + "images/grass1.png";
 
 /***/ },
 /* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/ground_tiles.png";
+	module.exports = __webpack_require__.p + "images/grass2.png";
 
 /***/ },
 /* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/hole.png";
+	module.exports = __webpack_require__.p + "images/grass3.png";
 
 /***/ },
 /* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/littleshrooms_0.png";
+	module.exports = __webpack_require__.p + "images/grass4.png";
 
 /***/ },
 /* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/logo.png";
+	module.exports = __webpack_require__.p + "images/ground_tiles.png";
 
 /***/ },
 /* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/qubodup-bush_0.png";
+	module.exports = __webpack_require__.p + "images/hole.png";
 
 /***/ },
 /* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/qubodup-bush_berries_0.png";
+	module.exports = __webpack_require__.p + "images/littleshrooms_0.png";
 
 /***/ },
 /* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/stone1.png";
+	module.exports = __webpack_require__.p + "images/logo.png";
 
 /***/ },
 /* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/stone2.png";
+	module.exports = __webpack_require__.p + "images/qubodup-bush_0.png";
 
 /***/ },
 /* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tree.png";
+	module.exports = __webpack_require__.p + "images/qubodup-bush_berries_0.png";
 
 /***/ },
 /* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tree2-final.png";
+	module.exports = __webpack_require__.p + "images/stone1.png";
 
 /***/ },
 /* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/tree2.png";
+	module.exports = __webpack_require__.p + "images/stone2.png";
 
 /***/ },
 /* 114 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/tree.png";
+
+/***/ },
+/* 115 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/tree2-final.png";
+
+/***/ },
+/* 116 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "images/tree2.png";
+
+/***/ },
+/* 117 */
 /***/ function(module, exports) {
 
 	function webpackContext(req) {
@@ -10170,20 +10806,21 @@
 	webpackContext.keys = function() { return []; };
 	webpackContext.resolve = webpackContext;
 	module.exports = webpackContext;
-	webpackContext.id = 114;
+	webpackContext.id = 117;
 
 
 /***/ },
-/* 115 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./animations.json": 116,
-		"./entities.json": 117,
-		"./inputs.json": 118,
-		"./prefabs.json": 119,
-		"./scenes.json": 120,
-		"./systems.json": 121,
+		"./animations.json": 119,
+		"./entities.json": 120,
+		"./inputs.json": 121,
+		"./prefabs.json": 122,
+		"./scenes.json": 123,
+		"./secondscene.json": 97,
+		"./systems.json": 124,
 		"./tilemap.json": 83,
 		"./tilemap2.json": 92
 	};
@@ -10198,21 +10835,77 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 115;
+	webpackContext.id = 118;
 
 
 /***/ },
-/* 116 */
+/* 119 */
 /***/ function(module, exports) {
 
 	module.exports = {};
 
 /***/ },
-/* 117 */
+/* 120 */
 /***/ function(module, exports) {
 
 	module.exports = {
 		"main": [
+			{
+				"id": 0,
+				"name": "camera",
+				"camera": true,
+				"position": {
+					"x": 0,
+					"y": 0
+				},
+				"follow": {
+					"id": 1,
+					"distance": 100
+				},
+				"matchCanvasSize": true
+			},
+			{
+				"id": 1,
+				"name": "player",
+				"player": true,
+				"timers": {
+					"spawn_delay": {
+						"running": true,
+						"time": 0,
+						"max": 1500
+					},
+					"move": {
+						"running": false,
+						"time": 0,
+						"max": 250,
+						"script": "./scripts/move_player"
+					}
+				},
+				"tile_size": {
+					"width": 0,
+					"height": 0
+				},
+				"image": {
+					"name": "character.png"
+				},
+				"moving": false,
+				"position": {
+					"x": 0,
+					"y": 0,
+					"z": 1
+				},
+				"lastPosition": {
+					"x": 0,
+					"y": 0
+				},
+				"size": {
+					"width": 32,
+					"height": 32
+				},
+				"collisions": []
+			}
+		],
+		"second": [
 			{
 				"id": 0,
 				"name": "camera",
@@ -10296,7 +10989,7 @@
 	};
 
 /***/ },
-/* 118 */
+/* 121 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10384,7 +11077,7 @@
 	};
 
 /***/ },
-/* 119 */
+/* 122 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10420,7 +11113,7 @@
 	};
 
 /***/ },
-/* 120 */
+/* 123 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10429,6 +11122,10 @@
 			"onEnter": "./scripts/main-enter",
 			"onExit": "./scripts/main-exit"
 		},
+		"second": {
+			"onEnter": "./scripts/second-enter",
+			"onExit": "./scripts/second-exit"
+		},
 		"battle": {
 			"onEnter": "./scripts/battle-enter",
 			"onExit": "./scripts/battle-exit"
@@ -10436,7 +11133,7 @@
 	};
 
 /***/ },
-/* 121 */
+/* 124 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -10445,6 +11142,7 @@
 				"name": "splat-ecs/lib/systems/match-canvas-size",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
@@ -10452,6 +11150,7 @@
 				"name": "splat-ecs/lib/systems/advance-timers",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
@@ -10459,6 +11158,7 @@
 				"name": "splat-ecs/lib/systems/advance-animations",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
@@ -10466,6 +11166,7 @@
 				"name": "splat-ecs/lib/systems/control-player",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
@@ -10473,6 +11174,7 @@
 				"name": "splat-ecs/lib/systems/apply-movement-2d",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
@@ -10480,6 +11182,7 @@
 				"name": "splat-ecs/lib/systems/apply-velocity",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
@@ -10487,6 +11190,7 @@
 				"name": "splat-ecs/lib/systems/apply-friction",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
@@ -10494,6 +11198,7 @@
 				"name": "splat-ecs/lib/systems/constrain-position",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
@@ -10501,6 +11206,7 @@
 				"name": "splat-ecs/lib/systems/follow-parent",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
@@ -10508,19 +11214,22 @@
 				"name": "splat-ecs/lib/systems/box-collider",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
 			{
 				"name": "./systems/simulation/main-collisions",
 				"scenes": [
-					"main"
+					"main",
+					"second"
 				]
 			},
 			{
 				"name": "./systems/simulation/track-last-position",
 				"scenes": [
-					"main"
+					"main",
+					"second"
 				]
 			},
 			{
@@ -10532,7 +11241,8 @@
 			{
 				"name": "./systems/simulation/move-tile",
 				"scenes": [
-					"main"
+					"main",
+					"second"
 				]
 			}
 		],
@@ -10541,6 +11251,7 @@
 				"name": "splat-ecs/lib/systems/clear-screen",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
@@ -10548,6 +11259,7 @@
 				"name": "splat-ecs/lib/systems/viewport-move-to-camera",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
@@ -10555,6 +11267,7 @@
 				"name": "splat-ecs/lib/systems/draw-image",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
@@ -10568,6 +11281,7 @@
 				"name": "splat-ecs/lib/systems/viewport-reset",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			},
@@ -10575,6 +11289,7 @@
 				"name": "splat-ecs/lib/systems/draw-frame-rate",
 				"scenes": [
 					"main",
+					"second",
 					"battle"
 				]
 			}
