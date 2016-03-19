@@ -55,6 +55,62 @@
 		"collisions": []
 	}
 	],
+	"second": [
+	{
+		"id": 0,
+		"name": "camera",
+		"camera": true,
+		"position": {
+			"x": 0,
+			"y": 0
+		},
+		"follow": {
+			"id": 1,
+			"distance": 100
+		},
+		"matchCanvasSize": true
+	},
+	{
+		"id": 1,
+		"name": "player",
+		"player": true,
+		"timers": {
+			"spawn_delay": {
+				"running": true,
+				"time": 0,
+				"max": 1500
+			},
+			"move": {
+				"running": false,
+				"time": 0,
+				"max": 250,
+				"script": "./scripts/move_player"
+			}
+		},
+		"tile_size": {
+			"width": 0,
+			"height": 0
+		},
+		"image": {
+			"name": "character.png"
+		},
+		"moving": false,
+		"position": {
+			"x": 0,
+			"y": 0,
+			"z": 1
+		},
+		"lastPosition": {
+			"x": 0,
+			"y": 0
+		},
+		"size": {
+			"width": 32,
+			"height": 32
+		},
+		"collisions": []
+	}
+	],
 	"battle": [
 	{
 		"id": 0,

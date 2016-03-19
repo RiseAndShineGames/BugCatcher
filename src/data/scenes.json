@@ -4,6 +4,10 @@
 		"onEnter": "./scripts/main-enter",
 		"onExit": "./scripts/main-exit"
 	},
+	"second": {
+		"onEnter": "./scripts/second-enter",
+		"onExit": "./scripts/second-exit"
+	},
 	"battle": {
 		"onEnter": "./scripts/battle-enter",
 		"onExit": "./scripts/battle-exit"

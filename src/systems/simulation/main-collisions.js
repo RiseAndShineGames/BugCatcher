@@ -52,12 +52,16 @@ module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
 					}
 				} else if (tiledProperties.SpawnBug) {
 					var spawnChance = tiledProperties.SpawnChance;
-					var chance = getRandomInt(0, 9999);
+					var chance = getRandomInt(0, 999);
 					if (chance < spawnChance && !timers.spawn_delay.running) {
 						var args = {
 							"player_pos": entityPosition
 						};
 						game.switchScene("battle", args);
+					}
+				} else if (tiledProperties.SwapScene) {
+					if (typeof tiledProperties.SceneName !== "undefined") {
+						game.switchScene(tiledProperties.SceneName);
 					}
 				}
 

@@ -3,73 +3,73 @@
 	{
 		"name": "splat-ecs/lib/systems/match-canvas-size",
 		"scenes": [
-			"main", "battle"
+			"main", "second", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/advance-timers",
 		"scenes": [
-			"main", "battle"
+			"main", "second", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/advance-animations",
 		"scenes": [
-			"main", "battle"
+			"main", "second", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/control-player",
 		"scenes": [
-			"main", "battle"
+			"main", "second", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/apply-movement-2d",
 		"scenes": [
-			"main", "battle"
+			"main", "second", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/apply-velocity",
 		"scenes": [
-			"main", "battle"
+			"main", "second", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/apply-friction",
 		"scenes": [
-			"main", "battle"
+			"main", "second", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/constrain-position",
 		"scenes": [
-			"main", "battle"
+			"main", "second", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/follow-parent",
 		"scenes": [
-			"main", "battle"
+			"main", "second", "battle"
 			]
 	},
 	{
 		"name": "splat-ecs/lib/systems/box-collider",
 		"scenes": [
-			"main", "battle"
+			"main", "second", "battle"
 			]
 	},
 	{
 		"name": "./systems/simulation/main-collisions",
 		"scenes": [
-			"main"
+			"main", "second"
 			]
 	},
 	{
 		"name": "./systems/simulation/track-last-position",
 		"scenes": [
-			"main"
+			"main", "second"
 			]
 	},
 	{
@@ -81,7 +81,7 @@
 	{
 		"name": "./systems/simulation/move-tile",
 		"scenes": [
-			"main"
+			"main", "second"
 			]
 	}
 	],
@@ -89,19 +89,19 @@
 		{
 			"name": "splat-ecs/lib/systems/clear-screen",
 			"scenes": [
-				"main", "battle"
+				"main", "second", "battle"
 				]
 		},
 		{
 			"name": "splat-ecs/lib/systems/viewport-move-to-camera",
 			"scenes": [
-				"main", "battle"
+				"main", "second", "battle"
 				]
 		},
 		{
 			"name": "splat-ecs/lib/systems/draw-image",
 			"scenes": [
-				"main", "battle"
+				"main", "second", "battle"
 				]
 		},
 		{
@@ -113,13 +113,13 @@
 		{
 			"name": "splat-ecs/lib/systems/viewport-reset",
 			"scenes": [
-				"main", "battle"
+				"main", "second", "battle"
 				]
 		},
 		{
 			"name": "splat-ecs/lib/systems/draw-frame-rate",
 			"scenes": [
-				"main", "battle"
+				"main", "second", "battle"
 				]
 		}
 	]
