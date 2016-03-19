@@ -10,6 +10,12 @@ module.exports = function(game) { // eslint-disable-line no-unused-vars
 	var spawn = game.entities.find("spawn");
 	if (game.arguments.player_pos) {
 		spawn_pos = game.arguments.player_pos;	
+	} else if (game.arguments.spawnID) {
+		for (var i = 0; i < spawn.length; i++) {
+			if (game.entities.get(spawn[i], "tiledProperties").ID == game.arguments.spawnID) {
+				spawn_pos = game.entities.get(spawn[i], "position");
+			}
+		}
 	} else if (spawn.length > 0) {
 		spawn_pos = game.entities.get(spawn, "position");
 	} else {

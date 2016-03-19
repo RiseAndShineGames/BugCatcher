@@ -20,9 +20,9 @@
                  "name":"",
                  "properties":
                     {
-                     "Spawn":"True"
+                     "ID":"1"
                     },
-                 "type":"",
+                 "type":"Spawn",
                  "visible":true,
                  "width":34,
                  "x":333,
@@ -35,9 +35,9 @@
                     {
                      "Collidable":"False",
                      "SceneName":"main",
-                     "SwapScene":"True"
+                     "SpawnID":"1"
                     },
-                 "type":"",
+                 "type":"Exit",
                  "visible":true,
                  "width":8,
                  "x":373,
