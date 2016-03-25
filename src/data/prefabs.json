@@ -27,5 +27,47 @@
 		"image": {
 			"name": ""
 		}
+	},
+	"initiative":{
+		"name":"initiative",
+		"initiative": true,
+		"size":{
+			"width":0,
+			"height":0
+		},
+		"position":{
+			"x":0,
+			"y":0,
+			"z":0
+		}
+	},
+	"menu":{
+		"name":"menu",
+		"menu":true,
+		"position":{
+			"x": 0,
+			"y": 0,
+			"z": 0
+		},
+		"size":{
+			"width":0,
+			"height":0
+		},
+		"options":{
+
+		}
+	},
+	"dialog":{
+		"name":"dialog",
+		"dialog": true,
+		"position":{
+			"x":0,
+			"y":0,
+			"z":0
+		},
+		"size":{
+			"width":0,
+			"height":0
+		}
 	}
 }
