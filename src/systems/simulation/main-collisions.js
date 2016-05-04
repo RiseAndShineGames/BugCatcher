@@ -31,45 +31,43 @@ module.exports = function(ecs, game) { // eslint-disable-line no-unused-vars
 			var tiledProperties = game.entities.get(other, "tiledProperties");
 			var otherPosition = game.entities.get(other, "position");
 			var otherSize = game.entities.get(other, "size");
-			var otherType = game.entities.get(other, "type");
 
-			if (typeof tiledProperties !== undefined) {
+            if (game.entities.get(other, "spawn")) {
+                continue;
+            }
 
-				if (tiledProperties.Collidable) {
-					if (wasLeft(entityLastPosition, entitySize, otherPosition)) {
-						entityPosition.x = otherPosition.x - entitySize.width;
-						entityVelocity.x = 0;
-					}
-					if (wasRight(entityLastPosition, otherPosition, otherSize)) {
-						entityPosition.x = otherPosition.x + otherSize.width;
-						entityVelocity.x = 0;
-					}
-					if (wasAbove(entityLastPosition, entitySize, otherPosition)) {
-						entityPosition.y = otherPosition.y - entitySize.height;
-						entityVelocity.y = 0;
-					}
-					if (wasBelow(entityLastPosition, otherPosition, otherSize)) {
-						entityPosition.y = otherPosition.y + otherSize.height;
-						entityVelocity.y = 0;
-					}
-				} else if (tiledProperties.SpawnBug) {
-					var spawnChance = tiledProperties.SpawnChance;
-					var chance = getRandomInt(0, 999);
-					if (chance < spawnChance && !timers.spawn_delay.running) {
-						args = {
-							"player_pos": entityPosition
-						};
-						game.switchScene("battle", args);
-					}
-				} else if (otherType == "Exit") {
-					if (typeof tiledProperties.SceneName !== "undefined") {
-						args = {
-							"spawnID": tiledProperties.SpawnID
-						};
-						game.switchScene(tiledProperties.SceneName, args);
-					}
-				}
-
+            if (game.entities.get(other, "Collidable")) {
+                if (wasLeft(entityLastPosition, entitySize, otherPosition)) {
+                    entityPosition.x = otherPosition.x - entitySize.width;
+                    entityVelocity.x = 0;
+                }
+                if (wasRight(entityLastPosition, otherPosition, otherSize)) {
+                    entityPosition.x = otherPosition.x + otherSize.width;
+                    entityVelocity.x = 0;
+                }
+                if (wasAbove(entityLastPosition, entitySize, otherPosition)) {
+                    entityPosition.y = otherPosition.y - entitySize.height;
+                    entityVelocity.y = 0;
+                }
+                if (wasBelow(entityLastPosition, otherPosition, otherSize)) {
+                    entityPosition.y = otherPosition.y + otherSize.height;
+                    entityVelocity.y = 0;
+                }
+            } else if (game.entities.get(other, "SpawnBug")) {
+                var spawnChance = game.entities.get(other, "SpawnChance");
+                var chance = getRandomInt(0, 999);
+                if (chance < spawnChance && !timers.spawn_delay.running) {
+                    args = {
+                        "player_pos": entityPosition
+                    };
+                    game.switchScene("battle", args);
+                }
+            } else if (game.entities.get(other, "Exit")) {
+                console.log("Test");
+                args = {
+                    "spawnID": game.entities.get(other, "SpawnID")
+                };
+                game.switchScene(tiledProperties.SceneName, args);
 			}
 
 		}

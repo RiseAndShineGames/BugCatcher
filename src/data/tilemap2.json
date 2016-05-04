@@ -35,9 +35,10 @@
                  "name":"",
                  "properties":
                     {
-                     "Collidable":"True"
+                     "collisions": "[]",
+                     "collidable":"True"
                     },
-                 "type":"",
+                 "type":"Collidable",
                  "visible":true,
                  "width":108,
                  "x":136,
@@ -48,7 +49,8 @@
                  "name":"",
                  "properties":
                     {
-                     "ID":"0"
+                     "spawn": "true",
+                     "spawnID":"0"
                     },
                  "type":"Spawn",
                  "visible":true,
@@ -61,11 +63,11 @@
                  "name":"",
                  "properties":
                     {
-                     "Collidable":"False",
-                     "SpawnBug":"True",
-                     "SpawnChance":"4"
+                     "collisions": "[]",
+                     "spawnbug": "true",
+                     "spawnchance":"4"
                     },
-                 "type":"",
+                 "type":"SpawnBug",
                  "visible":true,
                  "width":192,
                  "x":0,
@@ -76,6 +78,7 @@
                  "name":"",
                  "properties":
                     {
+                     "Exit": true,
                      "Collidable":"False",
                      "SceneName":"second",
                      "SpawnID":"0"
@@ -91,6 +94,7 @@
                  "name":"",
                  "properties":
                     {
+                     "spawn": "true",
                      "ID":"1"
                     },
                  "type":"Spawn",

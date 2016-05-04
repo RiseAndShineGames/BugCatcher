@@ -1,30 +1,33 @@
 "use strict";
 
-module.exports = function(game) { // eslint-disable-line no-unused-vars
-	var file = require("../data/tilemap2.json");
-	var importer = require("splat-ecs/lib/import-from-tiled.js");
-	importer(file, game.entities);
-	var player = 1;
+var file = require("../data/tilemap2.json");
+var importer = require("splat-ecs/lib/import-from-tiled.js");
 
-	var spawn_pos;
-	var spawn = game.entities.find("spawn");
-	if (game.arguments.player_pos) {
-		spawn_pos = game.arguments.player_pos;	
-	} else if (game.arguments.spawnID) {
-		for (var i = 0; i < spawn.length; i++) {
-			if (game.entities.get(spawn[i], "tiledProperties").ID == game.arguments.spawnID) {
-				spawn_pos = game.entities.get(spawn[i], "position");
-			}
-		}
-	} else if (spawn.length > 0) {
-		spawn_pos = game.entities.get(spawn[0], "position");
-	} else {
-		spawn_pos = { "x": 0, "y": 0 };
-	}
-	game.entities.set(player, "position", spawn_pos);
-	var tile = game.entities.find("tile")[0];
-	var tile_size = game.entities.get(tile, "size");
-	game.entities.set(player, "tile_size", tile_size);
-	var container = game.entities.find("container");
-	game.entities.set(player, "constrainPosition", { "id": container });
+module.exports = function(game) { // eslint-disable-line no-unused-vars
+    console.log(game.entities);
+    importer(file, game.entities);
+    console.log(game.entities);
+    var player = 1;
+
+    var spawn_pos;
+    var spawn = game.entities.find("spawn");
+    if (game.arguments.player_pos) {
+        spawn_pos = game.arguments.player_pos;	
+    } else if (game.arguments.spawnID) {
+        for (var i = 0; i < spawn.length; i++) {
+            if (game.entities.get(spawn[i], "tiledProperties").ID == game.arguments.spawnID) {
+                spawn_pos = game.entities.get(spawn[i], "position");
+            }
+        }
+    } else if (spawn.length > 0) {
+        spawn_pos = game.entities.get(spawn[0], "position");
+    } else {
+        spawn_pos = { "x": 0, "y": 0 };
+    }
+    game.entities.set(player, "position", spawn_pos);
+    var tile = game.entities.find("tile")[0];
+    var tile_size = game.entities.get(tile, "size");
+    game.entities.set(player, "tile_size", tile_size);
+    var container = game.entities.find("container");
+    game.entities.set(player, "constrainPosition", { "id": container });
 };

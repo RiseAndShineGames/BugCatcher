@@ -145,6 +145,17 @@
             },
          "spacing":0,
          "tileheight":32,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "Test":"True"
+                },
+             "1":
+                {
+                 "Test":"False"
+                }
+            },
          "tilewidth":32
         }, 
         {
